@@ -1,0 +1,1231 @@
+---
+mode_collaboration:
+  ask:
+    handoff_to_code:
+      - clarification_received              # requisitos claros → implem.
+      - documentation_complete              # doc prontos → gerar código
+      - knowledge_shared                    # contexto suficiente p/ codar
+    handoff_from_code:
+      - documentation_needed                # falta README / comentários
+      - implementation_explanation          # explicar lógica p/ usuário
+      - pattern_documentation               # descrever uso de design-pattern
+    handoff_to_sparc:
+      - complex_request_identified          # tarefa multi-modo detectada
+      - delegation_plan_needed              # quebrar pedido em subtarefas
+    handoff_from_sparc:
+      - orchestration_status_update         # resumo de subtarefas e donos
+      - clarifying_questions_for_user       # dúvidas a repassar ao usuário
+    handoff_to_boomerang:
+      - deliverable_ready_for_review        # artefato final precisa de QA
+    handoff_from_boomerang:
+      - review_feedback_for_user            # pontos de melhoria apontados
+    boomerang_delegated_task_reception:
+      - gather_user_requirements            # descobrir objetivos, restrições
+      - map_request_to_sparc_modes          # sugerir modo adequado
+      - craft_new_task_instructions         # template new_task completo
+      - educate_user_on_next_steps          # explicar fluxo SPARC
+    boomerang_completion_reporting:
+      - summarize_user_intent               # visão clara do que foi pedido
+      - list_recommended_modes              # modos sugeridos + justificativa
+      - provide_new_task_template           # corpo exemplo p/ usuário colar
+      - report_completion_status            # done / blocked + próximos passos
+  code:
+    handoff_to_default:
+      - global_mode_access                 # precisa usar ferramenta genérica
+      - mode_independent_actions           # tarefa fora do escopo de código
+      - system_wide_commands               # comandos amplos (lint, format)
+    handoff_from_default:
+      - code_task_identified               # tarefa de código detectada
+      - mcp_result_needs_coding            # output do MCP requer implementação
+    handoff_to_test:
+      - feature_ready_for_testing          # código concluído, testar
+      - tests_need_update                  # cobertura/testes desatualizados
+    handoff_from_test:
+      - test_fixes_required                # testes falharam, corrigir
+      - coverage_gaps_found                # cobertura < meta
+      - validation_failed                  # validação de requisitos falhou
+    handoff_to_debug:
+      - error_investigation_needed         # bug detectado, investigar
+      - performance_issue_found            # lentidão observada
+      - system_analysis_required           # análise de runtime
+    handoff_from_debug:
+      - fix_implementation_ready           # solução pronta, aplicar
+      - performance_fix_needed             # ajustes de perf necessários
+      - error_pattern_found                # causa raiz identificada
+    handoff_to_architect:
+      - needs_architectural_changes        # refatoração estrutural grande
+      - design_clarification_needed        # dúvida de design
+      - pattern_violation_found            # padrão quebrado
+    handoff_from_architect:
+      - implementation_needed              # implementar desenho novo
+      - code_modification_needed           # alterar código existente
+      - refactoring_required               # refatoração p/ alinhar arquitetura
+    handoff_to_boomerang:
+      - implementation_complete            # PR/diff pronto p/ revisão
+    handoff_from_boomerang:
+      - review_changes_requested           # feedback a corrigir
+      - code_approved                      # pronto p/ merge/deploy
+    boomerang_delegated_task_reception:
+      - implement_feature_spec             # escrever código a partir do spec
+      - refactor_legacy_module             # refatorar p/ padrões modernos
+      - add_unit_integration_tests         # cobrir novo código
+      - update_documentation_comments      # docstrings, README, CHANGELOG
+      - run_lint_and_formatter             # ESLint/Black/GoFmt etc.
+    boomerang_completion_reporting:
+      - summarize_code_changes             # arquivos modificados, LOC
+      - list_tests_added_or_updated        # novos testes e status
+      - provide_commit_or_pr_link          # link para revisão
+      - report_completion_status           # done / blocked + próximos passos
+  architect:
+    handoff_to_code:
+      - implementation_needed              # implementar novo design
+      - refactoring_required               # refatorar p/ alinhar arquitetura
+      - code_modification_needed           # ajustes em código existente
+    handoff_from_code:
+      - needs_architectural_changes        # código viola suposições
+      - design_clarification_needed        # dúvida sobre diagrama/fluxo
+      - pattern_violation_found            # padrão de projeto quebrado
+    handoff_to_database-specialist:
+      - schema_design_finalized            # criar tabelas/índices
+      - data_migration_plan_required       # planejar migração zero-downtime
+    handoff_from_database-specialist:
+      - db_constraints_impact_design       # limitações alteram modelo
+    handoff_to_api-design-specialist:
+      - api_contract_needed                # gerar OpenAPI/gRPC spec
+      - breaking_change_requires_version   # versionar endpoint
+    handoff_from_api-design-specialist:
+      - contract_feedback_affects_design   # ajustar boundary/contexto
+    handoff_to_ui-ux-specialist:
+      - design_system_architecture_ready   # tokens / front-back boundary
+    handoff_from_ui-ux-specialist:
+      - ux_requirements_change_flows       # novo fluxo impacta backend
+    handoff_to_cloud-infrastructure-specialist:
+      - infra_topology_defined             # provisionar VPC/K8s/mesh
+    handoff_from_cloud-infrastructure-specialist:
+      - infra_constraint_alters_design     # quota / latência muda trade-off
+    boomerang_delegated_task_reception:
+      - create_system_and_container_diagrams  # C4 / Mermaid completos
+      - define_domain_boundaries           # contextos e APIs
+      - list_non_functional_requirements   # escalabilidade, segurança, observ.
+      - draft_adr_entries                  # decisão, alternativas, impacto
+      - review_cross_cutting_concerns      # logging, tracing, auth, i18n
+    boomerang_completion_reporting:
+      - summarize_design_artifacts         # links p/ diagramas e ADRs
+      - provide_tradeoff_analysis          # custo, perf, complexidade
+      - report_completion_status           # done / blocked + próximos passos
+  debug:
+    handoff_to_code:
+      - fix_implementation_ready          # patch pronto, aplicar
+      - performance_fix_needed            # ajustar código p/ perf
+      - error_pattern_found               # causa raiz identificada
+    handoff_from_code:
+      - error_investigation_needed        # bug detectado, investigar
+      - performance_issue_found           # lentidão observada
+      - system_analysis_required          # dump/heap analysis
+    handoff_to_test:
+      - regression_test_update_needed     # criar/atualizar teste
+    handoff_from_test:
+      - failing_test_pointing_to_bug      # falha isolada indica erro
+    handoff_to_architect:
+      - systemic_issue_requires_redesign  # problema estrutural
+    handoff_from_architect:
+      - design_change_affects_debug       # novo design muda cenário
+    handoff_to_performance-optimizer:
+      - deep_performance_tracing_required  # flamegraph, pprof, etc.
+    handoff_from_performance-optimizer:
+      - perf_hotspot_located              # ponto crítico encontrado
+    boomerang_delegated_task_reception:
+      - reproduce_bug_in_isolation        # steps + ambiente controlado
+      - collect_logs_and_stacktraces      # evidências para análise
+      - identify_root_cause               # rastrear código/dep
+      - propose_minimal_viable_fix        # PR/patch sugerido
+      - create_regression_test            # prevenir recorrência
+    boomerang_completion_reporting:
+      - summarize_root_cause              # módulo, linha, condição
+      - detail_fix_recommendation         # diff ou link do patch
+      - attach_logs_and_repro_steps       # artefatos p/ auditoria
+      - report_completion_status          # done / blocked + next passos
+  sparc:
+    task_decomposition:
+      - analyze_complex_request             # entender escopo multi-modo
+      - break_into_granular_subtasks        # tarefas ≤ 2 arquivos cada
+      - map_subtask_to_best_mode            # escolher modo especialista
+    delegation:
+      - construct_clear_instructions        # contexto, escopo, resultado
+      - launch_new_task_via_tool            # usar new_task para delegar
+      - monitor_subtask_status              # registrar IDs, progresso
+    result_reception:
+      - receive_attempt_completion          # ler relatório de cada modo
+      - validate_outcome_against_scope      # sucesso ou falha criteriosa
+      - aggregate_deliverables              # juntar PRs, docs, métricas
+    workflow_management:
+      - update_user_on_plan_and_progress     # explicar quem faz o quê
+      - decide_next_action_or_escalation     # repetir, escalar, encerrar
+      - ask_clarifying_questions_when_needed  # evitar suposições
+    handoff_to_architect:
+      - architectural_guidance_required      # falta desenho de alto nível
+    handoff_from_architect:
+      - design_artifacts_received            # diagramas, ADR prontos
+    handoff_to_code:
+      - implementation_subtask_created       # feature/refactor para código
+    handoff_from_code:
+      - code_task_completed                  # patch/PR disponível
+    handoff_to_test:
+      - test_suite_requested                 # cobrir nova feature
+    handoff_from_test:
+      - test_results_processed               # verde/vermelho, cobertura
+    handoff_to_debug:
+      - bug_integration_detected             # erro descoberto durante fluxo
+    handoff_from_debug:
+      - bug_fix_available                    # correção pronta p/ merge
+    handoff_to_docs-writer:
+      - documentation_update_needed          # READMEs, ADR, tutorial
+    handoff_from_docs-writer:
+      - docs_ready_for_release               # documentação final
+    boomerang_delegated_task_reception:
+      - orchestrate_full_workflow            # planejar, monitorar, ajustar
+      - ensure_instruction_priority          # evitar salto de escopo
+      - manage_escalation_chain              # Intern→Junior→Mid→Senior
+      - maintain_progress_log                # atualizar progress.md
+    boomerang_completion_reporting:
+      - compile_final_summary                # visão geral de tudo entregue
+      - list_each_subtask_status             # completo / pendente / falhou
+      - provide_next_steps_or_closeout       # próximos passos ou concluir
+      - report_completion_status             # done / blocked + próximos passos
+  spec-pseudocode:
+    handoff_to_code:
+      - implementation_spec_ready           # pseudocode completo, codar
+      - edge_case_clarification_needed      # casos limite faltando
+    handoff_from_code:
+      - spec_alignment_question             # dúvida sobre passo/fluxo
+      - additional_details_required         # precisar entradas/saídas extras
+    handoff_to_test:
+      - acceptance_criteria_defined         # Given-When-Then pronto p/ testes
+    handoff_from_test:
+      - test_scenario_gap_found             # falta cobrir caso de erro
+    handoff_to_architect:
+      - design_pattern_consultation_needed  # avaliar padrão / trade-off
+    handoff_from_architect:
+      - architecture_constraints_updated    # limites que afetam fluxo
+    handoff_to_boomerang:
+      - specification_complete              # pronto p/ revisão de qualidade
+    handoff_from_boomerang:
+      - changes_requested_on_spec           # feedback detalhado
+      - spec_approved                       # pronto p/ implementação
+    boomerang_delegated_task_reception:
+      - gather_requirements_and_constraints  # contexto, NFR, user stories
+      - draft_input_output_table            # tipos, validação, exemplos
+      - create_happy_path_flowchart         # passos numerados em texto
+      - enumerate_edge_cases_matrix         # erros, timeouts, limites
+      - write_step_by_step_pseudocode       # linguagem-agnóstica, comentado
+      - define_acceptance_criteria          # Given-When-Then para cada cenário
+    boomerang_completion_reporting:
+      - summarize_spec_sections             # tabelas, fluxos, pseudocode
+      - attach_markdown_artifacts           # bloco MD com spec final
+      - list_open_questions_if_any          # pontos pendentes
+      - report_completion_status            # done / blocked + próximos passos
+  tdd:
+    handoff_to_code:
+      - failing_tests_ready                # implementar até testes passarem
+      - coverage_gap_identified            # cobrir partes não testadas
+    handoff_from_code:
+      - tests_need_update                  # API mudou, atualizar assertions
+      - flaky_test_detected                # teste intermitente, estabilizar
+    handoff_to_debug:
+      - failing_test_reveals_bug           # bug reproduzido via teste
+    handoff_from_debug:
+      - bug_fixed_need_new_assertion       # adicionar teste de regressão
+    handoff_to_performance-optimizer:
+      - benchmark_threshold_defined        # perf target, criar benchmark
+    handoff_from_performance-optimizer:
+      - performance_regression_found       # escrever teste de benchmark
+    handoff_to_boomerang:
+      - test_suite_complete                # pronto p/ revisão de qualidade
+    handoff_from_boomerang:
+      - improvements_requested_on_tests    # feedback sobre clareza/cobertura
+      - tests_approved                     # suite aceitável
+    boomerang_delegated_task_reception:
+      - create_failing_tests_for_feature   # Test First p/ nova feature
+      - add_edge_case_assertions           # cenários limite e erros
+      - increase_coverage_to_target        # ≥ 80 % linha/branch
+      - write_benchmark_tests              # medir latência / throughput
+      - generate_coverage_report           # HTML/lcov artefato
+    boomerang_completion_reporting:
+      - summarize_tests_created            # número, arquivos, cenários
+      - attach_coverage_metrics            # % linha/branch antes e depois
+      - link_html_reports                  # path do coverage/benchmark
+      - report_completion_status           # done / blocked + próximos passos
+  default:
+    handoff_to_code:
+      - code_task_identified
+      - mcp_result_needs_coding
+    handoff_from_code:
+      - global_mode_access
+      - mode_independent_actions
+      - system_wide_commands
+    boomerang_delegated_task_reception:
+      - execute_commands
+      - perform_system_operations
+    boomerang_completion_reporting:
+      - report_outcome
+      - summarize_results
+      - report_completion_status
+  boomerang:
+    task_decomposition:
+      - analyze_complex_requests        # quebrar problema em subtarefas
+      - break_into_subtasks             # granularidade ≤ 2 arquivos
+      - identify_modes                  # mapear modo ideal p/ cada subtask
+    delegation:
+      - formulate_instructions          # contexto, escopo, outcome
+      - use_new_task_tool               # criar subtarefas via new_task
+      - track_subtask_progress          # armazenar IDs, status
+    result_reception:
+      - receive_completion_reports      # ler attempt_completion dos modos
+      - analyze_subtask_outcomes        # validar sucesso ou falha
+      - synthesize_overall_progress     # somar resultados p/ usuário
+    workflow_management:
+      - determine_next_steps            # decidir próximo subtask ou encerrar
+      - communicate_plan_to_user        # explicar delegação e por quê
+      - ask_clarifying_questions        # quando requisito não estiver claro
+    handoff_to_architect:
+      - design_clarification_required   # arquitetura ambígua ou ausente
+    handoff_from_architect:
+      - architectural_plan_ready        # design concluído, delegar code/test
+    handoff_to_code:
+      - implementation_subtask_created  # feature/refactor para Auto-Coder
+    handoff_from_code:
+      - code_subtask_complete           # patch/PR pronto, encaminhar QA
+    handoff_to_test:
+      - tests_needed_for_feature        # criar suíte de testes
+    handoff_from_test:
+      - test_results_available          # passar/falhar, cobrir lacunas
+    handoff_to_debug:
+      - runtime_issue_detected          # erro ou regressão encontrada
+    handoff_from_debug:
+      - bug_fix_ready                   # correção disponível p/ merge
+    handoff_to_docs-writer:
+      - docs_update_required            # README/ADR precisando revisão
+    handoff_from_docs-writer:
+      - documentation_updated           # guia finalizado
+    handoff_to_performance-optimizer:
+      - performance_regression_noted    # latência ou uso ↑ após deploy
+    handoff_from_performance-optimizer:
+      - perf_optimizations_applied      # ganho medido, seguir workflow
+    boomerang_delegated_task_reception:
+      - orchestrate_multi_mode_workflow  # criar plano completo
+      - monitor_subtask_health          # timeout, retries, escalate
+      - enforce_instruction_priority    # garantir modos sigam escopo
+      - aggregate_final_deliverables    # juntar artefatos finais
+    boomerang_completion_reporting:
+      - synthesize_final_report         # resumo de tudo que foi feito
+      - provide_mode_breakdown          # lista de modos e subtarefas
+      - list_remaining_open_items       # tarefas pendentes ou bloqueios
+      - report_completion_status        # done / blocked + próximos passos
+  security-review:
+    handoff_to_code:
+      - vulnerability_patch_required        # corrigir CVE/secrets vazados
+      - secret_rotation_script_needed       # automatizar rotação
+      - dependency_upgrade_required         # lib vulnerável → versão segura
+    handoff_from_code:
+      - security_gap_identified             # falha de auth/input sanitize
+      - insecure_dependency_detected        # lib CVE alto
+      - hardcoded_secret_found              # credenciais no código
+    handoff_to_devops:
+      - ci_cd_scan_stage_failed             # SAST/DAST bloqueou pipeline
+      - image_signature_required            # habilitar Cosign/verify
+    handoff_from_devops:
+      - supply_chain_risk_detected          # SBOM alto risco
+      - admission_webhook_blocked_deploy    # container não assinado
+    handoff_to_cloud-infrastructure-specialist:
+      - public_s3_bucket_detected           # precisar fechar ACL
+      - iam_policy_over_permissive          # revisar least-privilege
+    handoff_from_cloud-infrastructure-specialist:
+      - infrastructure_hardening_complete   # CIS benchmark aplicado
+    handoff_to_api-design-specialist:
+      - auth_flow_review_needed             # OAuth2/JWT escopo/PKCE
+    handoff_from_api-design-specialist:
+      - rate_limit_policy_missing           # falta 429 / Retry-After
+    boomerang_delegated_task_reception:
+      - run_secret_and_cve_scans            # gitleaks, Grype, osv-scanner
+      - perform_threat_modeling             # STRIDE / LINDDUN
+      - generate_risk_report                # severidade, CVSS, mapeamento
+      - propose_mitigations_and_controls    # patch, WAF, CSP, headers
+      - update_decision_log_with_findings   # timestamp + ações
+    boomerang_completion_reporting:
+      - summarize_vulnerabilities           # lista high/med/low
+      - attach_remediation_steps            # PR links ou playbook
+      - update_sbom_and_audit_trail         # SBOM JSON/CycloneDX
+      - report_completion_status            # done / blocked + próximos passos
+  docs-writer:
+    handoff_to_code:
+      - code_comment_update_needed          # adicionar/atualizar docstrings
+      - documentation_snippet_requested     # incluir exemplo de uso no código
+    handoff_from_code:
+      - undocumented_public_api_detected    # função/pacote sem README
+      - technical_details_clarification     # explicar lógica p/ docs
+    handoff_to_architect:
+      - architecture_diagram_requested      # inserir C4/Mermaid no guia
+    handoff_from_architect:
+      - design_change_requires_doc_update   # novo diagrama, fluxo alterado
+    handoff_to_ui-ux-specialist:
+      - style_guide_review_needed           # feedback sobre legibilidade/a11y
+    handoff_from_ui-ux-specialist:
+      - readability_suggestion_received     # ajuste de estrutura/visual
+    handoff_to_boomerang:
+      - documentation_complete              # pronto p/ revisão final
+    handoff_from_boomerang:
+      - doc_changes_requested               # correções de formatação/conteúdo
+      - documentation_approved              # pronto p/ merge / release
+    boomerang_delegated_task_reception:
+      - generate_project_readme             # visão geral, setup, exemplos
+      - create_adr_entry                    # registro de decisão arquitetural
+      - update_changelog                    # formato Keep a Changelog semver
+      - write_api_reference_markdown        # endpoint, params, exemplos
+      - craft_tutorial_or_howto             # passo a passo com código
+    boomerang_completion_reporting:
+      - summarize_docs_created              # arquivos MD gerados/alterados
+      - attach_rendered_links               # docs site, mkdocs, etc.
+      - list_open_doc_tasks_if_any          # TODOs pendentes
+      - report_completion_status            # done / blocked + próximos passos
+  integration:
+    handoff_to_code:
+      - adapter_implementation_needed        # criar cliente/SDK ou wrapper
+      - error_retry_logic_required           # implementar back-off / circuit
+      - api_version_upgrade_refactor         # ajustar código p/ nova versão
+    handoff_from_code:
+      - integration_point_unclear            # dúvida sobre payload ou fluxo
+      - auth_handling_issue_found            # problema com OAuth/JWT/mTLS
+      - schema_mismatch_detected             # payload difere do contrato
+    handoff_to_api-design-specialist:
+      - contract_change_requested             # negociar versão/endpoint novo
+    handoff_from_api-design-specialist:
+      - updated_openapi_spec_available        # novo contract pronto
+    handoff_to_database-specialist:
+      - idempotency_store_design_needed       # tabela/log p/ deduplicação
+    handoff_from_database-specialist:
+      - persistence_layer_ready               # store/indice criado
+    handoff_to_ui-ux-specialist:
+      - error_handling_copy_required          # mensagens amigáveis p/ usuário
+    handoff_from_ui-ux-specialist:
+      - copy_and_states_provided              # textos/estados aprovados
+    handoff_to_deployment-monitor:
+      - new_slo_for_integration_defined       # latência/erro p95 budget
+    handoff_from_deployment-monitor:
+      - slo_breach_for_integration_detected   # excesso de erro/latência
+    boomerang_delegated_task_reception:
+      - map_service_dependencies              # produtor→consumidor gráfico
+      - design_retry_and_timeout_strategy     # matriz back-off/jitter
+      - draft_sequence_diagram                # Mermaid HTTP/gRPC/event flow
+      - create_contract_tests                 # Pact/Dredd para endpoints
+      - document_integration_playbook         # runbook + fallback procedures
+    boomerang_completion_reporting:
+      - summarize_integration_design          # diagramas, políticas, SLAs
+      - attach_contract_test_results          # pass/fail, cobertura
+      - list_todo_for_follow_up_modes         # itens a implementar/corrigir
+      - report_completion_status              # done / blocked + próximos passos
+  post-deployment-monitoring-mode:
+    handoff_to_devops:
+      - rollout_health_degradation         # alert on rollout / HPA issue
+      - rollback_procedure_triggered       # auto-rollback executed
+    handoff_from_devops:
+      - deployment_event_received          # new release in prod
+      - pipeline_failure_alert             # deploy stage falhou
+    handoff_to_performance-optimizer:
+      - latency_slo_breach_detected        # p95 acima do alvo
+      - resource_saturation_trend          # CPU / memória > 80 %
+    handoff_from_performance-optimizer:
+      - optimisation_plan_provided         # plano de tuning aceito
+    handoff_to_security-review:
+      - anomaly_security_event_detected    # spike de 4xx/5xx suspeito
+    handoff_from_security-review:
+      - incident_root_cause_identified     # falha de auth / WAF
+    handoff_to_ui-ux-specialist:
+      - user_experience_regression_found   # CLS/LCP piorou
+    handoff_from_ui-ux-specialist:
+      - ux_fix_priority_defined            # melhoria aprovada
+    boomerang_delegated_task_reception:
+      - define_slos_and_error_budgets      # métricas, alvo, orçamento
+      - create_dashboards_and_alerts       # Grafana, Alertmanager regras
+      - monitor_release_health             # comparar antes/depois deploy
+      - run_post_mortem_process            # timeline, ação corretiva
+      - update_runbooks_and_docs           # playbook.md, README SRE
+    boomerang_completion_reporting:
+      - summarize_incident_metrics         # MTTA, MTTR, erro%, latência
+      - provide_dashboard_links            # URL Grafana / Kibana
+      - log_postmortem_to_memory_bank      # decisão + ação preventiva
+      - report_completion_status           # done / blocked + next steps
+  devops:
+    handoff_to_code:
+      - ci_pipeline_script_needed          # criar/atualizar YAML pipeline
+      - build_config_fix_required          # ajustar Dockerfile/Makefile
+    handoff_from_code:
+      - pipeline_step_failing              # testes quebram, revisar config
+      - artifact_publish_issue             # problema ao push de imagem/pkg
+    handoff_to_cloud-infrastructure-specialist:
+      - terraform_state_backend_setup      # configurar backend remoto
+      - helm_chart_values_alignment        # valores prod vs dev
+    handoff_from_cloud-infrastructure-specialist:
+      - infra_module_version_change        # update provider/module pin
+      - hpa_autoscaling_policy_updated     # ajuste métrica de auto-scale
+    handoff_to_security-review:
+      - cve_scan_stage_failed              # slam alto, bloquear deploy
+      - image_signature_verification_needed# habilitar Cosign/admission
+    handoff_from_security-review:
+      - security_gate_policy_change        # nova regra de scan/veto
+    handoff_to_deployment-monitor:
+      - new_deployment_metric_exported     # adicionar métrica rollout
+    handoff_from_deployment-monitor:
+      - slo_breach_during_rollout          # latência/erro subiu
+    boomerang_delegated_task_reception:
+      - build_ci_cd_pipeline               # lint→test→build→scan→deploy
+      - containerize_application           # multi-stage Dockerfile
+      - implement_gitops_workflow          # ArgoCD / Flux config
+      - set_up_release_strategies          # blue-green, canary, flags
+      - automate_iac_validation            # tflint/kube-lint nos stages
+    boomerang_completion_reporting:
+      - summarize_pipeline_changes         # arquivo, steps, par-jobs
+      - provide_deploy_artifact_links      # image tag, helm chart
+      - list_security_and_quality_gates    # SAST, DAST, test cobertura
+      - report_completion_status           # done / blocked + próximos passos
+  tutorial:
+    handoff_to_ask:
+      - user_needs_additional_guidance        # dúvida sobre próximo passo
+    handoff_from_ask:
+      - clarification_on_lesson_scope         # escopo da lição ajustado
+    handoff_to_sparc:
+      - complex_demo_requires_delegation      # precisa orquestrar subtarefas
+    handoff_from_sparc:
+      - lesson_decomposition_ready            # plano de subtarefas definido
+    handoff_to_docs-writer:
+      - tutorial_markdown_generation_needed   # converter lição para guia MD
+    handoff_from_docs-writer:
+      - tutorial_docs_completed               # guia pronto p/ revisão
+    handoff_to_ui-ux-specialist:
+      - learning_material_a11y_review         # verificar contraste, navegação
+    handoff_from_ui-ux-specialist:
+      - accessibility_feedback_received       # aplicar melhorias na lição
+    boomerang_delegated_task_reception:
+      - design_step_by_step_lesson            # objetivos, pré-requisitos
+      - craft_interactive_exercises           # prompts “Try it” + soluções
+      - build_checklist_and_quiz              # checklist + 3-5 MCQs
+      - update_progress_tracking              # registrar conclusão progress.md
+    boomerang_completion_reporting:
+      - summarize_lesson_content              # tópicos cobertos, duração
+      - attach_exercise_assets                # arquivos/links de exemplo
+      - log_tutorial_update_memory_bank       # entrada em decisionLog.md
+      - report_completion_status              # done / blocked + próximos passos
+  refinement-optimization-mode:
+    handoff_to_code:
+      - refactor_task_generated             # implementar mudanças sugeridas
+      - duplicate_logic_removal_needed      # eliminar duplicação em código
+      - performance_patch_required          # aplicar micro-optimiz. local
+    handoff_from_code:
+      - refactor_scope_question             # dúvida sobre escopo da refactor
+      - side_effect_detected                # mudança altera comportamento
+      - technical_debt_item_logged          # item de débito a tratar
+    handoff_to_test:
+      - regression_suite_update_needed      # garantir testes cobrem refactor
+    handoff_from_test:
+      - test_failure_after_refactor         # ajuste requerido p/ passar teste
+    handoff_to_performance-optimizer:
+      - macro_performance_issue_detected    # gargalo além de micro-optimiz.
+    handoff_from_performance-optimizer:
+      - hotspot_details_provided            # funções de alto custo
+    handoff_to_docs-writer:
+      - api_change_requires_doc_update      # docs/README precisam revisão
+    handoff_from_docs-writer:
+      - doc_feedback_accepted               # docs atualizadas com sucesso
+    boomerang_delegated_task_reception:
+      - identify_code_smells                # long method, large class etc.
+      - refactor_to_patterns                # aplicar Factory, Strategy, etc.
+      - remove_dead_code                    # limpar funções não usadas
+      - optimise_queries_and_loops          # algorítmos mais rápidos
+      - update_benchmark_and_metrics        # medir ganho de lat./cpu
+    boomerang_completion_reporting:
+      - summarize_refactor_changes          # arquivos, LOC alterados
+      - report_performance_improvement      # %, ms, memória economizada
+      - attach_diff_or_pr_links             # referência ao patch
+      - report_completion_status            # done / blocked + próximos passos
+  react-nextjs-specialist:
+    handoff_to_ui-ux-specialist:
+      - design_token_alignment_needed     # garantir tipografia/cores
+      - accessibility_review_request      # validar navegação teclado/ARIA
+    handoff_from_ui-ux-specialist:
+      - design_feedback_ready             # ajustes de layout ou contraste
+    handoff_to_performance-optimizer:
+      - bundle_size_regression_detected   # Webpack/LCP ↑ após merge
+    handoff_from_performance-optimizer:
+      - perf_hotspot_report_provided      # sugestão de code-splitting/cache
+    handoff_to_api-design-specialist:
+      - api_contract_mismatch_noted       # resposta/endpoint mudou
+    handoff_from_api-design-specialist:
+      - updated_openapi_requires_changes  # adaptar fetch/CSR/SSR
+    handoff_to_devops:
+      - nextjs_build_pipeline_update      # habilitar cache/vercel config
+    handoff_from_devops:
+      - deployment_failure_log_received   # erro node , config ambiente
+    boomerang_delegated_task_reception:
+      - implement_app_router_structure    # layouts, nested routing
+      - optimise_core_web_vitals          # LCP, CLS, INP metas
+      - add_responsive_next_image         # <Image> com priority/placeholder
+      - configure_edge_runtime_api        # route handlers Edge Functions
+      - set_up_i18n_and_dynamic_routes    # next-intl + slugs
+    boomerang_completion_reporting:
+      - summarize_component_changes       # arquivos/pages alterados
+      - report_web_vitals_metrics         # antes vs depois, % ganho
+      - provide_preview_and_storybook     # link vercel + storybook
+      - report_completion_status          # done / blocked + próximos passos
+  python-fastapi-specialist:
+    handoff_to_api-design-specialist:
+      - openapi_spec_sync_needed           # atualizar contrato após mudança
+      - auth_flow_design_consult           # revisar OAuth2/JWT/Paseto escopo
+    handoff_from_api-design-specialist:
+      - updated_contract_requires_update   # alterar Pydantic models/routers
+      - rate_limit_policy_update           # integrar header & retry
+    handoff_to_database-specialist:
+      - async_repo_layer_optimization      # pool/asyncpg tuning
+      - schema_migration_script_request    # adicionar col/índice novo endpoint
+    handoff_from_database-specialist:
+      - db_constraint_affects_validation   # Pydantic validator ajustado
+    handoff_to_performance-optimizer:
+      - high_latency_endpoint_detected     # p95 > 200 ms
+    handoff_from_performance-optimizer:
+      - uvloop_or_gunicorn_tuning_plan     # workers, keep-alive, HTTP/2
+    handoff_to_security-review:
+      - dependency_vuln_scan_failed        # CVE em pacote PyPI
+      - secret_in_env_detection            # credenciais expostas
+    handoff_from_security-review:
+      - security_patch_required            # upgrade/patch libs ou CSP
+    boomerang_delegated_task_reception:
+      - scaffold_async_endpoints           # router, Pydantic v2 model
+      - implement_background_tasks         # send_email, webhook process
+      - add_streaming_response             # Chunked JSON / SSE
+      - write_pytest_async_tests           # httpx.AsyncClient, coverage ≥ 85 %
+      - generate_openapi_docs              # swagger + redoc, include examples
+    boomerang_completion_reporting:
+      - summarize_new_endpoints            # path, method, summary
+      - provide_performance_metrics        # p95, throughput, mem
+      - attach_api_docs_link               # /docs, /redoc URLs
+      - report_completion_status           # done / blocked + próximos passos
+  go-microservices-specialist:
+    handoff_to_api-design-specialist:
+      - grpc_proto_update_needed           # alterar .proto / REST gateway
+      - openapi_gateway_alignment          # sync spec com grpc-gateway
+    handoff_from_api-design-specialist:
+      - contract_change_requires_stub      # regenerar stubs / handlers
+      - auth_policy_update_affects_service  # revisar interceptors/mTLS
+    handoff_to_database-specialist:
+      - new_table_or_index_required        # schema para repositorio Go
+      - query_optimization_request         # ajustar SQL/ORM consulta
+    handoff_from_database-specialist:
+      - db_schema_constraints_updated      # alterar struct tags / migrar
+    handoff_to_performance-optimizer:
+      - latency_spike_in_endpoint          # p95 ↑, analisar pprof
+    handoff_from_performance-optimizer:
+      - goroutine_leak_found               # precisa ajustar pool/cancel
+    handoff_to_cloud-infrastructure-specialist:
+      - service_mesh_policy_update_needed  # mTLS, retries, timeouts
+    handoff_from_cloud-infrastructure-specialist:
+      - mesh_config_applied                # sidecar injetado corretamente
+    boomerang_delegated_task_reception:
+      - scaffold_grpc_service              # cmd/, internal/, pkg/ estrutura
+      - implement_business_logic           # use Clean Architecture ports
+      - add_circuit_breaker_and_retries    # gobreaker + backoff
+      - write_table_driven_tests           # go test -race, coverage ≥ 85 %
+      - configure_observability            # zap logs, OpenTelemetry traces
+    boomerang_completion_reporting:
+      - summarize_service_endpoints        # RPCs, REST gateway paths
+      - provide_pprof_and_metrics_links    # endpoint /debug/pprof, /metrics
+      - attach_docker_image_tag            # registry image:vX.Y
+      - report_completion_status           # done / blocked + próximos passos
+  performance-optimizer:
+    handoff_to_code:
+      - optimisation_patch_required       # inserir mudanças de código
+      - refactor_for_performance          # reestruturar algoritmo
+    handoff_from_code:
+      - profiling_data_ready              # flamegraph / pprof disponível
+      - performance_fix_implemented       # patch aplicado, medir ganho
+    handoff_to_database-specialist:
+      - slow_query_detected               # precisa de índice / partição
+    handoff_from_database-specialist:
+      - query_optimised                   # EXPLAIN ANALYZE melhorou
+    handoff_to_deployment-monitor:
+      - new_performance_slo_defined       # monitorar latência p95
+    handoff_from_deployment-monitor:
+      - slo_breach_alert                  # latência acima do limite
+    boomerang_delegated_task_reception:
+      - profile_application_hotspots      # CPU, memória, I/O, GC
+      - benchmark_before_after            # stress / load test comparativo
+      - implement_caching_or_parallelism  # memoize, threads, goroutines
+      - document_results_in_changelog     # ganho %, métricas, data
+    boomerang_completion_reporting:
+      - summarize_hotspot_findings        # funções + % CPU tempo
+      - report_performance_gains          # latência, throughput, uso CPU
+      - provide_patch_links               # commits ou PRs relevantes
+      - report_completion_status          # done / blocked + próximos passos
+  database-specialist:
+    handoff_to_code:
+      - schema_migration_scripts_needed   # gerar SQL/ORM migration
+      - query_fix_implementation          # ajustar consulta no código
+      - connection_pool_tuning_required   # alterar pool / timeout
+    handoff_from_code:
+      - orm_mapping_issue_found           # consultas N+1, lazy load
+      - migration_applied_needs_review    # verificar integridade pós-deploy
+    handoff_to_power-bi-specialist:
+      - build_star_schema_view            # criar view otimizada p/ BI
+    handoff_from_power-bi-specialist:
+      - dax_perf_issue_requires_index     # índice para DirectQuery
+    handoff_to_performance-optimizer:
+      - slow_query_hotspot_detected       # precisa de EXPLAIN + tuning
+    handoff_from_performance-optimizer:
+      - query_explain_analysis_provided   # planos de execução analisados
+    handoff_to_api-design-specialist:
+      - contract_change_impacts_db        # alinhamento de versionamento
+    handoff_from_api-design-specialist:
+      - new_api_field_requires_column     # adicionar coluna / default
+    boomerang_delegated_task_reception:
+      - design_relational_schema          # 3NF / star / partition key
+      - plan_zero_downtime_migration      # backward-compatible rollout
+      - create_indexes_and_constraints    # keys, unique, checks
+      - tune_long_running_queries         # EXPLAIN ANALYZE, refatorar
+      - configure_replication_and_backup  # read replicas, PITR
+    boomerang_completion_reporting:
+      - summarize_schema_changes          # tabelas, colunas, etapas
+      - report_migration_status           # applied / pending, checksum
+      - provide_performance_metrics       # tempo de consulta antes/depois
+      - report_completion_status          # done / blocked + próximos passos
+  ui-ux-specialist:
+    handoff_to_code:
+      - component_style_update_needed      # ajustar CSS/props no código
+      - a11y_fix_implementation_required   # adicionar ARIA / foco correto
+    handoff_from_code:
+      - new_component_ready_for_design     # componente cru precisa de estilo
+      - layout_regression_detected         # UI quebrada após merge
+    handoff_to_growth-marketing:
+      - landing_page_cro_assets_ready      # entregar mockups/variantes
+    handoff_from_growth-marketing:
+      - conversion_insight_feedback        # dados de teste A/B para UX
+    handoff_to_digital-marketing:
+      - ad_creative_alignment_needed       # garantir branding consistente
+    handoff_from_digital-marketing:
+      - brand_guideline_update             # novas cores/tipografia
+    handoff_to_google-tag-manager:
+      - layout_shift_caused_by_tags        # pixel desloca page / CLS ↑
+    handoff_from_google-tag-manager:
+      - tag_position_fixed                 # script injetado de forma segura
+    boomerang_delegated_task_reception:
+      - audit_accessibility_wcag           # contraste, navegação, ARIA
+      - design_responsive_components       # mobile-first, breakpoints
+      - create_design_tokens_library       # cores, espaçamento, tipografia
+      - build_interactive_prototypes       # Figma / Storybook demos
+      - run_usability_tests_and_report     # SUS score, heat-map insights
+    boomerang_completion_reporting:
+      - summarize_design_updates           # tokens, layouts, componentes
+      - attach_prototype_links             # Figma/Storybook URL
+      - list_accessibility_fixes           # WCAG issues resolvidos
+      - report_completion_status           # done / blocked + próximos passos
+  api-design-specialist:
+    handoff_to_code:
+      - openapi_spec_implementation       # gerar rotas/códigos a partir do spec
+      - contract_test_stub_needed         # criar testes pact/dredd
+    handoff_from_code:
+      - endpoint_behavior_clarification   # dúvidas sobre contrato vs lógica
+      - breaking_change_warning           # implementação que viola spec
+    handoff_to_security-review:
+      - auth_flow_design_review           # revisar OAuth2/JWT segurança
+      - rate_limit_policy_audit           # validar limites e erros
+    handoff_from_security-review:
+      - security_gap_identified           # atualizar spec com requisitos
+    handoff_to_integration:
+      - service_contract_ready            # integrar pontos de extremidade
+    handoff_from_integration:
+      - integration_feedback_on_api       # problemas de schema/headers
+    handoff_to_database-specialist:
+      - schema_alignment_needed           # mudanças de modelo impactam DB
+    handoff_from_database-specialist:
+      - db_constraint_affects_contract    # limitações que exigem versão
+    boomerang_delegated_task_reception:
+      - draft_openapi_contract            # OAS 3.1 completo + exemplos
+      - define_versioning_strategy        # URI/header; sunset policy
+      - create_error_model_and_codes      # padrão 4xx/5xx documentação
+      - generate_contract_tests           # Spectral, Dredd, Pact
+      - publish_api_docs_portal           # Swagger UI / Redoc
+    boomerang_completion_reporting:
+      - summarize_contract_changes        # paths, schemas, statuses
+      - provide_version_diff              # openapi-diff report
+      - list_governance_rule_results      # Spectral linter output
+      - report_completion_status          # done / blocked + próximos passos
+  cloud-infrastructure-specialist:
+    handoff_to_devops:
+      - terraform_module_update_needed     # novo recurso ou variável
+      - helm_chart_refactor_required       # ajuste de values / HPA
+    handoff_from_devops:
+      - pipeline_infra_stage_failing       # apply com erro, revisar scripts
+      - drift_detection_alert              # estado divergente do plano
+    handoff_to_security-review:
+      - public_endpoint_exposed            # revisar regras de firewall/SG
+      - iam_policy_least_privilege_check   # validar políticas IAM
+    handoff_from_security-review:
+      - cis_benchmark_violation_found      # recomendações de endurecimento
+      - secret_rotation_required           # chave vencida ou vazada
+    handoff_to_performance-optimizer:
+      - high_node_cpu_utilization          # analisar tamanho/auto-scale
+    handoff_from_performance-optimizer:
+      - optimisation_plan_for_nodes        # sugestões de instance type/cost
+    handoff_to_deployment-monitor:
+      - new_slo_for_infra_component        # latência ELB, lag de réplica
+    handoff_from_deployment-monitor:
+      - slo_breach_in_infra_component      # alerta de disponibilidade
+    boomerang_delegated_task_reception:
+      - provision_cloud_resources          # VPC, sub-redes, RDS, GKE, AKS
+      - configure_k8s_cluster_scaling      # cluster/node/HPA escalonamento
+      - implement_cost_optimisations       # spot/pre-emptible, rightsizing
+      - set_up_backup_disaster_recovery    # snapshots, cross-region
+      - document_architecture_and_costs    # diagrama + FinOps dashboard
+    boomerang_completion_reporting:
+      - summarize_infra_changes            # recursos, tags, regiões
+      - provide_apply_plan_and_outputs     # terraform plan/apply output
+      - update_cost_dashboard_link         # FinOps painel atualizado
+      - report_completion_status           # done / blocked + próximos passos
+  google-sheets-specialist:
+    handoff_to_excel-specialist:
+      - export_large_sheet_to_excel      # precisa de modelagem avançada
+      - pivot_table_performance_issue    # otimizar usando Power Pivot
+    handoff_from_excel-specialist:
+      - excel_model_needs_cloud_sharing  # migrar para Sheets colaborativo
+    handoff_to_data-scientist:
+      - cleaned_dataset_ready            # CSV extraído para análise
+    handoff_from_data-scientist:
+      - prediction_results_to_sheet      # colar outputs em aba 'Results'
+    handoff_to_growth-marketing:
+      - campaign_dashboard_live          # relatório para marketing
+    handoff_from_growth-marketing:
+      - new_kpi_requirements             # métricas adicionais no dashboard
+    boomerang_delegated_task_reception:
+      - import_external_data             # IMPORTRANGE / API / Apps Script
+      - build_arrayformula_model         # automatizar cálculos em coluna
+      - create_interactive_dashboard     # gráficos + slicers vinculados
+      - automate_with_apps_script        # onEdit / time-based triggers
+    boomerang_completion_reporting:
+      - summarize_sheet_structure        # abas, tabelas, named ranges
+      - list_key_formulas                # ARRAYFORMULA, QUERY, REGEX
+      - provide_script_links             # URL do Apps Script, triggers
+      - report_completion_status         # done / blocked + próximos passos
+  excel-specialist:
+    handoff_to_power-bi-specialist:
+      - dataset_ready_for_bi          # tabela normalizada pronta para BI
+      - dax_measures_required         # precisa converter fórmulas para DAX
+    handoff_from_power-bi-specialist:
+      - bi_feedback_on_model          # ajuste solicitado no modelo em Excel
+    handoff_to_data-scientist:
+      - export_clean_dataset          # CSV/XLSX limpo para modelagem
+    handoff_from_data-scientist:
+      - model_results_to_dashboard    # métricas para exibir em planilha
+    handoff_to_ui-ux-specialist:
+      - improve_excel_dashboard       # cores, contraste, layout a11y
+    boomerang_delegated_task_reception:
+      - clean_raw_data                # Power Query ETL, tabelas nomeadas
+      - build_formula_model           # LET/LAMBDA, tabelas dinâmicas
+      - automate_with_vba             # macros refatoradas em módulos
+      - create_dynamic_charts         # gráficos vinculados a tabelas
+    boomerang_completion_reporting:
+      - summarize_model_structure     # abas, tabelas, nomes definidos
+      - list_key_formulas             # principais LET/LAMBDA criadas
+      - provide_macro_details         # módulos, procedimentos, atalho
+      - report_completion_status      # done / blocked + próximos passos
+  digital-marketing:
+    handoff_to_growth-marketing:
+      - channel_performance_metrics     # ROAS, CTR, CPL consolidados
+      - new_keyword_opportunity         # sugestão de termo SEO
+      - audience_segment_insight        # cluster comportamental encontrado
+    handoff_from_growth-marketing:
+      - growth_experiment_brief         # hipótese, ICE score, KPI alvo
+      - creative_asset_request          # banner, copy, vídeo para teste
+    handoff_to_ui-ux-specialist:
+      - landing_copy_audit_needed       # revisar mensagem / hierarquia
+    handoff_from_ui-ux-specialist:
+      - cro_copy_feedback               # melhorias de clareza e CTA
+    handoff_to_google-tag-manager:
+      - tag_implementation_request      # GA4 ou Ads conversion tag nova
+    handoff_from_google-tag-manager:
+      - tag_deployment_confirmation     # tag publicada e testada
+    boomerang_delegated_task_reception:
+      - launch_paid_campaigns           # Google Ads, Meta Ads, LinkedIn
+      - optimise_seo_content            # on-page + link-building estratégia
+      - schedule_email_drip             # fluxo de boas-vindas / nutrição
+      - build_cross_channel_dashboard   # GA4 + GSC + ad spend em Looker
+    boomerang_completion_reporting:
+      - summarize_campaign_results      # spend, conv, CAC, ROAS
+      - update_marketing_dashboard      # métricas atualizadas
+      - log_actions_to_memory_bank      # entrada no decisionLog.md
+      - report_completion_status        # done / blocked + próximos passos
+  google-tag-manager:
+    handoff_to_digital-marketing:
+      - tag_deployment_ready            # container publicado e testado
+      - conversion_event_configured     # GA4/Ads/Facebook Pixel ativo
+      - tag_performance_warning         # script > 100 KB ou fire rate alto
+    handoff_from_digital-marketing:
+      - tag_request_new_channel         # preciso adicionar novo pixel
+      - update_existing_tag_rules       # mudar trigger/variable
+    handoff_to_ui-ux-specialist:
+      - layout_shift_from_tags_detected  # CLS ↑ após injeção de script
+    handoff_from_ui-ux-specialist:
+      - accessibility_script_feedback   # foco/aria em elementos injetados
+    handoff_to_security-review:
+      - custom_html_tag_security_audit  # revisar JS de terceiro
+    handoff_from_security-review:
+      - security_risk_found             # script malicioso ou tracker extra
+    boomerang_delegated_task_reception:
+      - design_datalayer_schema         # chave/valor padronizado
+      - implement_ga4_and_ads_tags      # config + event + remarketing
+      - configure_consent_mode_triggers  # GDPR/LGPD consent flow
+      - debug_and_publish_container     # Tag Assistant, publish + notes
+    boomerang_completion_reporting:
+      - summarize_gmt_changes           # lista de tags, triggers, vars
+      - provide_preview_qr              # link/QR do modo Preview
+      - log_publish_version             # versão, autor, changelog
+      - report_completion_status        # done / blocked + próximos passos
+  growth-marketing:
+    handoff_to_digital-marketing:
+      - campaign_assets_needed          # criativos, copys, segmentação
+      - channel_budget_allocation       # redistribuir verba paga
+    handoff_from_digital-marketing:
+      - channel_performance_report      # ROAS, CTR, CPA consolidados
+      - seo_opportunity_spotted         # novas keywords a testar
+    handoff_to_ui-ux-specialist:
+      - landing_page_cro_required       # otimizar taxa de conversão
+    handoff_from_ui-ux-specialist:
+      - cro_test_results_available      # var A/B melhora conversão
+    handoff_to_statistical-analyst:
+      - experiment_significance_check   # validar resultados A/B
+    handoff_from_statistical-analyst:
+      - statistical_report_ready        # p-value, efeito, recomendação
+    boomerang_delegated_task_reception:
+      - plan_growth_experiment          # ICE score, hipótese, KPI
+      - launch_multichannel_test        # SEO, SEM, social, email drip
+      - analyse_funnel_metrics          # CAC, LTV, retention curve
+      - iterate_and_scale_winners       # reinvestir em canais vencedores
+    boomerang_completion_reporting:
+      - summarize_experiment_outcome    # resultado, learnings, next step
+      - update_growth_dashboard         # métricas antes x depois
+      - log_decision_in_memory_bank     # entrada no decisionLog.md
+      - report_completion_status        # done / blocked + follow-up
+  power-bi-specialist:
+    handoff_to_database-specialist:
+      - source_schema_change_required      # precisa de nova view/índice
+      - query_optimization_needed          # ajustar SQL para DirectQuery
+    handoff_from_database-specialist:
+      - new_schema_available               # star/flat schema liberada
+      - optimized_view_ready               # view/materialized view pronta
+    handoff_to_ui-ux-specialist:
+      - dashboard_design_enhancement       # paleta, acessibilidade, layout
+    handoff_from_ui-ux-specialist:
+      - visual_feedback_received           # sugestões de UX aplicáveis
+    handoff_to_performance-optimizer:
+      - dax_performance_issue_detected     # slow measure > 2 s
+    handoff_from_performance-optimizer:
+      - performance_tips_ready             # sugestões DAX/agg tabelas
+    boomerang_delegated_task_reception:
+      - build_star_schema_dataset          # modelagem + relationships
+      - write_dax_measures                 # KPIs, time-intelligence
+      - create_interactive_dashboards      # relatórios + slicers
+      - publish_report_pipeline            # dev→test→prod via pbi-tools
+    boomerang_completion_reporting:
+      - summarize_dataset_structure        # tabelas, chaves, relationships
+      - list_performance_metrics           # coluna, size, perf Analyst log
+      - provide_pbi_artifacts              # .pbip/.pbix, rule check log
+      - report_completion_status           # done / blocked + next steps
+  google-colab-specialist:
+    handoff_to_data-scientist:
+      - cleaned_notebook_ready          # EDA finished, ready for modelling
+      - model_training_environment_set  # GPU/TPU runtime configured
+    handoff_from_data-scientist:
+      - model_code_snippet_provided      # needs Colab execution/testing
+      - dataset_preprocessing_script     # load & prep data in notebook
+    handoff_to_performance-optimizer:
+      - gpu_utilization_issue_found      # notebook under-utilises GPU/TPU
+    handoff_from_performance-optimizer:
+      - optimisation_suggestions_ready   # tips to speed up cell runtime
+    handoff_to_devops:
+      - convert_notebook_to_pipeline     # need CI/CD or Dockerization
+    boomerang_delegated_task_reception:
+      - set_up_runtime_and_dependencies  # pin versions, install libs
+      - mount_and_stream_datasets        # Drive / GCS / Kaggle mounts
+      - clean_and_comment_cells          # remove outputs, add markdown
+      - profile_gpu_tpu_usage            # nvidia-smi, TPU profiler
+      - export_results_artifacts         # save .ipynb, .html, models
+    boomerang_completion_reporting:
+      - summarize_notebook_structure     # sections, key cells
+      - list_installed_versions          # pip freeze snapshot
+      - provide_artifact_links           # Drive/GCS/Hub URL
+      - report_completion_status         # done / blocked + next steps
+  data-scientist:
+    handoff_to_statistical-analyst:
+      - experiment_design_needed        # precisa de teste estatístico formal
+      - hypothesis_validation_required  # validar hipótese / efeito
+      - confidence_interval_calculation  # gerar CI/HDI no relatório
+    handoff_from_statistical-analyst:
+      - experiment_design_ready         # delineamento recebido
+      - statistical_results_available   # p-value / HDI prontos
+      - interpretation_needed           # traduzir resultado em insight
+    handoff_to_performance-optimizer:
+      - model_inference_latency_issue   # modelo lento em produção
+    handoff_from_performance-optimizer:
+      - latency_profile_ready           # profiling mostra gargalos
+    boomerang_delegated_task_reception:
+      - explore_dataset                 # EDA completa e visualizações
+      - build_machine_learning_model    # pipeline ML/feature engineering
+      - evaluate_model_performance      # métricas, ROC/PR, SHAP
+      - document_notebook               # notebook reprodutível e limpo
+    boomerang_completion_reporting:
+      - summarize_eda_findings          # principais padrões e anomalias
+      - report_model_metrics            # accuracy, AUC, F1, MAE, etc.
+      - provide_model_artifacts         # link para .pkl / ONNX / path
+      - outline_next_steps              # sugestões de melhoria ou produção
+  statistical-analyst:
+    handoff_to_data_scientist:
+      - data_cleaning_needed          # precisa de data wrangling adicional
+      - feature_engineering_required  # criação de novas features
+      - model_implementation_needed   # transformar teste estatístico em modelo
+    handoff_from_data_scientist:
+      - exploratory_analysis_completed   # EDA concluída, pronto p/ testes
+      - model_ready_for_evaluation       # modelo treinado, avaliar estatística
+      - results_interpretation_needed    # interpretar métricas do modelo
+    boomerang_delegated_task_reception:
+      - design_experiments           # delinear A/B, amostragem, power
+      - perform_statistical_tests    # t-test, chi², ANOVA, bayesiano
+      - generate_visualizations      # box-plot, CI, densidades
+    boomerang_completion_reporting:
+      - summarize_statistical_findings   # p-value, efeito, HDI
+      - report_confidence_intervals      # 95 % CI/HDI em output
+      - provide_recommendations          # ações baseadas no resultado
+  memory-bank-system:
+    handoff_to_all_modes:
+      - context_retrieval_request          # recuperar trechos relevantes
+      - memory_write_operation             # registrar decisão / progresso
+    handoff_from_all_modes:
+      - context_snippet_provided           # trecho devolvido ao solicitante
+      - memory_entry_appended              # nova linha gravada em .md
+    handoff_to_security-review:
+      - pii_or_secret_detected             # sanitizar antes de salvar
+    handoff_from_security-review:
+      - sanitization_rules_updated         # novas regras de mascaramento
+    handoff_to_performance-optimizer:
+      - vector_db_size_warning             # memória vetorial crescendo
+    handoff_from_performance-optimizer:
+      - embedding_cleanup_strategy_ready   # políticas de retenção aprovadas
+    boomerang_delegated_task_reception:
+      - store_context_snippet              # gravar em decisionLog.md etc.
+      - fetch_relevant_context             # buscar top-k do Vector DB
+      - sync_markdown_and_vector_store     # manter consistência
+      - run_nightly_drift_scan             # comparar versões, reconciliar
+    boomerang_completion_reporting:
+      - confirm_memory_update              # arquivo + linha inseridos
+      - return_context_snippets            # lista de trechos ao solicitante
+      - log_sync_status                    # verde/amarelo/vermelho
+      - report_completion_status           # done / blocked + próximos passos
+
+mode_triggers:
+  architect:
+    - needs_architectural_changes
+    - design_clarification_needed
+    - pattern_violation_found
+
+  test:
+    - tests_need_update
+    - coverage_check_needed
+    - feature_ready_for_testing
+
+  debug:
+    - error_investigation_needed
+    - performance_issue_found
+    - system_analysis_required
+
+  ask:
+    - documentation_needed
+    - implementation_explanation
+    - pattern_documentation
+
+  default:
+    - global_mode_access
+    - mode_independent_actions
+    - system_wide_commands
+
+  code:
+    - implementation_needed
+    - code_modification_needed
+    - refactoring_required
+    - test_fixes_required
+    - coverage_gaps_found
+    - validation_failed
+    - fix_implementation_ready
+    - performance_fix_needed
+    - error_pattern_found
+    - clarification_received
+    - code_task_identified
+    - mcp_result_needs_coding
+
+  # ---------- Especialistas de dados ----------
+  data-scientist:
+    - data_analysis_requested
+    - build_ml_model
+
+  statistical-analyst:
+    - statistical_test_needed
+    - experiment_design_needed
+
+  power-bi-specialist:
+    - power_bi_dashboard_update
+    - dax_optimisation_required
+
+  excel-specialist:
+    - excel_modeling_task
+
+  google-sheets-specialist:
+    - sheets_automation_task
+
+  google-colab-specialist:
+    - colab_notebook_cleanup
+
+  # ---------- Marketing & GTM ----------
+  growth-marketing:
+    - plan_growth_experiment
+
+  digital-marketing:
+    - run_digital_campaign
+
+  google-tag-manager:
+    - gtm_container_update
+
+  # ---------- Performance & Segurança ----------
+  performance-optimizer:
+    - performance_bottleneck_found
+
+  security-review:
+    - security_scan_needed
+    - vulnerability_found
+
+  # ---------- Backend & Infra ----------
+  database-specialist:
+    - db_schema_change_needed
+    - query_optimisation_needed
+
+  api-design-specialist:
+    - api_contract_change
+
+  cloud-infrastructure-specialist:
+    - infra_provision_request
+
+  devops:
+    - cicd_pipeline_update
+    - container_build_needed
+
+  post-deployment-monitoring-mode:
+    - slo_breach_detected
+    - release_health_check_needed
+
+  # ---------- Frontend & UX ----------
+  ui-ux-specialist:
+    - accessibility_audit_needed
+
+  react-nextjs-specialist:
+    - core_web_vitals_regression
+
+  # ---------- Go / Python Service Experts ----------
+  python-fastapi-specialist:
+    - fastapi_endpoint_change
+
+  go-microservices-specialist:
+    - go_service_update_needed
+
+  # ---------- Integração & Refino ----------
+  integration:
+    - new_service_integration
+    - api_version_upgrade
+
+  refinement-optimization-mode:
+    - refactor_task_detected
+
+  # ---------- Documentação & Tutoria ----------
+  docs-writer:
+    - docs_update_required
+    - readme_missing
+
+  tutorial:
+    - tutorial_creation_requested
+
+  # ---------- Orquestração, Memória, Boomerang ----------
+  sparc:
+    - complex_workflow_detected
+
+  boomerang:
+    - subtask_completion_received
+
+  memory-bank-system:
+    - context_storage_request
+    - context_retrieval_request
+
+
+memory_bank_strategy:
+  initialization: |
+    # Verifica se existe a pasta memory-bank/
+    - CHECAR pasta memory-bank/
+    - Caso exista → saltar p/ if_memory_bank_exists
+    - Caso contrário → seguir if_no_memory_bank
+
+  if_no_memory_bank: |
+    1. Avisar usuário (PT-BR):
+       "Não encontrei a pasta *memory-bank/*. Deseja que eu a crie
+       automaticamente para manter o contexto do projeto?"
+    2. Se usuário recusar:
+       a. Registrar estado como `[MEMORY BANK: INACTIVE]`
+       b. Continuar tarefa ou fazer ask_followup_question
+    3. Se usuário aceitar:
+       a. Delegar ao modo **Architect**:
+          - criar estrutura `memory-bank/` com 5 arquivos-base
+          - inicializar cada `.md` com cabeçalhos padrão
+       b. Logar ação no `decisionLog.md` (se já existir)
+       c. Upsert inicial no Vector DB (Chroma)
+
+  if_memory_bank_exists: |
+    1. Ler TODOS os arquivos .md na pasta, priorizando:
+       a. activeContext.md
+       b. productContext.md
+       c. systemPatterns.md
+       d. decisionLog.md
+       e. progress.md
+       f. Demais `.md` encontrados em ordem alfabética
+    2. Atualizar status → `[MEMORY BANK: ACTIVE]`
+    3. Sincronizar conteúdo lido com o Vector DB (upsert)
+    4. Prosseguir usando o contexto; se não houver tarefa, acionar
+       *ask_followup_question*.
+
+umb:
+  trigger: "^(update memory[ -]?bank|umb|!umb)$"
+  instructions:
+    - "Pausar tarefa atual"
+    - "Responder: '[MEMORY BANK: UPDATING]'"
+    - "Criar lockfile .umb.lock ou abortar se já existir"
+    - "Registrar início no decisionLog.md (timestamp ISO)"
+  temporary_god_mode_activation: |
+    1. Permissões elevadas (try/finally p/ reverter)
+    2. Liberar todos os grupos e editar quaisquer arquivos .md
+  core_update_process: |
+    1. Ler histórico da sessão → extrair Q&A, decisões
+    2. Aplicar diffs nos arquivos memory-bank/ (git add -p)
+    3. Persistir em Vector DB (upsert embeddings)
+    4. Registrar changelog no decisionLog.md
+  task_focus: |
+    Capturar esclarecimentos, decisões, datas, responsáveis.
+    Ignorar mensagens sem valor durável (ex.: saudação).
+  cross_mode_updates: |
+    Verificar se outros modos já geraram contexto adicional;
+    mesclar sem sobrescrever (usar marcadores <!--auto-->).
+  post_umb_actions:
+    - "Sincronização concluída"
+    - "Lockfile removido"
+    - "Permissões restauradas"
+    - "Estado '[MEMORY BANK: ACTIVE]'"
+    - "Se erro → estado '[MEMORY BANK: ERROR]' e notificar usuário"
+  override_file_restrictions: true
+  override_mode_restrictions: true
