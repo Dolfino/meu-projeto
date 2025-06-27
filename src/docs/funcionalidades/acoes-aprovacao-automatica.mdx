@@ -1,0 +1,247 @@
+# Ações de Aprovação Automática
+
+> ⚠️ **AVISO DE SEGURANÇA:** As configurações de aprovação automática ignoram prompts de confirmação, dando ao Roo acesso direto ao seu sistema. Isso pode resultar em **perda de dados, corrupção de arquivos ou pior**. O acesso à linha de comando é particularmente perigoso, pois pode potencialmente executar operações prejudiciais que podem danificar seu sistema ou comprometer a segurança. Ative a aprovação automática apenas para ações em que você confia totalmente.
+
+As configurações de aprovação automática aceleram seu fluxo de trabalho eliminando prompts de confirmação repetitivos, mas aumentam significativamente os riscos de segurança.
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+  <iframe
+    src="https://www.youtube.com/embed/jW4_PPyRXCs"
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}
+    frameBorder="0"
+    allow="autoplay; encrypted-media"
+    allowFullScreen
+  ></iframe>
+</div>
+<br />
+
+---
+
+## Guia Rápido
+
+1. Clique na barra de ferramentas de Aprovação Automática acima da entrada de chat
+2. Selecione quais ações o Roo pode executar sem pedir permissão
+3. Use o interruptor mestre (caixa de seleção mais à esquerda) para ativar/desativar rapidamente todas as permissões
+
+---
+
+## Barra de Ferramentas de Aprovação Automática
+
+<img src="/img/auto-approving-actions/auto-approving-actions.png" alt="Barra de ferramentas de aprovação automática em estado recolhido" width="600" />
+
+*Caixa de prompt e Barra de Ferramentas de Aprovação Automática mostrando permissões ativadas*
+
+Clique na barra de ferramentas para expandi-la e configurar permissões individuais:
+
+<img src="/img/auto-approving-actions/auto-approving-actions-1.png" alt="Barra de ferramentas de aprovação automática em estado expandido" width="600" />
+
+*Caixa de texto de prompt e Barra de ferramentas expandida com todas as opções*
+
+### Permissões Disponíveis
+
+| Permissão | O que faz | Nível de risco |
+|------------|--------------|------------|
+| **Ler arquivos e diretórios** | Permite que o Roo acesse arquivos sem perguntar | Médio |
+| **Editar arquivos** | Permite que o Roo modifique arquivos sem perguntar | **Alto** |
+| **Executar comandos aprovados** | Executa comandos de terminal na lista de permissões automaticamente | **Alto** |
+| **Usar o navegador** | Permite interação com navegador headless | Médio |
+| **Usar servidores MCP** | Permite que o Roo use serviços MCP configurados | Médio-Alto |
+| **Alternar modos** | Muda entre modos do Roo automaticamente | Baixo |
+| **Criar e concluir subtarefas** | Gerencia subtarefas sem confirmação | Baixo |
+| **Repetir solicitações com falha** | Repete automaticamente solicitações de API com falha | Baixo |
+
+---
+
+## Interruptor Mestre para Controle Rápido
+
+A caixa de seleção mais à esquerda funciona como um interruptor mestre:
+
+<img src="/img/auto-approving-actions/auto-approving-actions-14.png" alt="Interruptor mestre na Barra de Ferramentas de Aprovação Automática" width="600" />
+
+*Interruptor mestre (caixa de seleção) controla todas as permissões de aprovação automática de uma vez*
+
+Use o interruptor mestre quando:
+- Trabalhando em código sensível (desligue)
+- Fazendo desenvolvimento rápido (ligue)
+- Alternando entre tarefas de exploração e edição
+
+---
+
+## Painel de Configurações Avançadas
+
+O painel de configurações fornece controle detalhado com contexto de segurança importante:
+
+> **Permitir que o Roo execute operações automaticamente sem exigir aprovação. Ative essas configurações apenas se você confiar totalmente na IA e entender os riscos de segurança associados.**
+
+Para acessar essas configurações:
+
+1. Clique em <Codicon name="gear" /> no canto superior direito
+2. Navegue até Configurações de Aprovação Automática
+
+<img src="/img/auto-approving-actions/auto-approving-actions-4.png" alt="Opções de aprovação automática no painel de configurações" width="550" />
+
+*Visualização completa do painel de configurações*
+
+### Operações de Leitura
+
+:::caution Operações de Leitura
+<img src="/img/auto-approving-actions/auto-approving-actions-6.png" alt="Configuração de operações somente leitura" width="550" />
+
+**Configuração:** "Sempre aprovar operações somente leitura"
+
+**Descrição:** "Quando ativado, o Roo visualizará automaticamente o conteúdo do diretório e lerá arquivos sem exigir que você clique no botão Aprovar."
+
+**Nível de risco:** Médio
+
+Embora esta configuração permita apenas a leitura de arquivos (não modificá-los), ela pode potencialmente expor dados sensíveis. Ainda recomendado como ponto de partida para a maioria dos usuários, mas esteja ciente de quais arquivos o Roo pode acessar.
+:::
+
+### Operações de Escrita
+
+:::caution Operações de Escrita
+<img src="/img/auto-approving-actions/auto-approving-actions-7.png" alt="Configuração de operações de escrita com controle deslizante de atraso" width="550" />
+
+**Configuração:** "Sempre aprovar operações de escrita"
+
+**Descrição:** "Criar e editar arquivos automaticamente sem exigir aprovação"
+
+**Controle deslizante de atraso:** "Atraso após gravações para permitir que os diagnósticos detectem problemas potenciais" (Padrão: 1000ms)
+
+**Nível de risco:** Alto
+
+Esta configuração permite que o Roo modifique seus arquivos sem confirmação. O temporizador de atraso é crucial:
+- Valores mais altos (2000ms+): Recomendado para projetos complexos onde os diagnósticos demoram mais
+- Padrão (1000ms): Adequado para a maioria dos projetos
+- Valores mais baixos: Use apenas quando a velocidade for crítica e você estiver em um ambiente controlado
+- Zero: Sem atraso para diagnósticos (não recomendado para código crítico)
+
+#### Atraso de Escrita e Integração com o Painel de Problemas
+
+<img src="/img/auto-approving-actions/auto-approving-actions-5.png" alt="Painel de Problemas do VSCode mostrando informações de diagnóstico" width="600" />
+
+*Painel de Problemas do VSCode que o Roo verifica durante o atraso de escrita*
+
+Quando você ativa a aprovação automática para gravar arquivos, o temporizador de atraso funciona com o Painel de Problemas do VSCode:
+
+1. O Roo faz uma alteração em seu arquivo
+2. As ferramentas de diagnóstico do VSCode analisam a alteração
+3. O Painel de Problemas é atualizado com quaisquer erros ou avisos
+4. O Roo percebe esses problemas antes de continuar
+
+Isso funciona como um desenvolvedor humano pausando para verificar erros após alterar o código. Você pode ajustar o tempo de atraso com base em:
+- Complexidade do projeto
+- Velocidade do servidor de linguagem
+- Quão importante é a detecção de erros para seu fluxo de trabalho
+:::
+
+### Ações do Navegador
+
+:::info Ações do Navegador
+<img src="/img/auto-approving-actions/auto-approving-actions-8.png" alt="Configuração de ações do navegador" width="550" />
+
+**Configuração:** "Sempre aprovar ações do navegador"
+
+**Descrição:** "Executar automaticamente ações do navegador sem exigir aprovação"
+
+**Nota:** "Aplica-se apenas quando o modelo suporta uso de computador"
+
+**Nível de risco:** Médio
+
+Permite que o Roo controle um navegador headless sem confirmação. Isso pode incluir:
+- Abrir sites
+- Navegar por páginas
+- Interagir com elementos da web
+
+Considere as implicações de segurança de permitir acesso automatizado ao navegador.
+:::
+
+### Solicitações de API
+
+:::info Solicitações de API
+<img src="/img/auto-approving-actions/auto-approving-actions-9.png" alt="Configuração de repetição de solicitações de API com controle deslizante de atraso" width="550" />
+
+**Configuração:** "Sempre repetir solicitações de API com falha"
+
+**Descrição:** "Repetir automaticamente solicitações de API com falha quando o servidor retornar uma resposta de erro"
+
+**Controle deslizante de atraso:** "Atraso antes de repetir a solicitação" (Padrão: 5s)
+
+**Nível de risco:** Baixo
+
+Esta configuração repete automaticamente chamadas de API quando elas falham. O atraso controla quanto tempo o Roo espera antes de tentar novamente:
+- Atrasos mais longos são mais gentis com os limites de taxa da API
+- Atrasos mais curtos fornecem recuperação mais rápida de erros transitórios
+:::
+
+### Ferramentas MCP
+
+:::caution Ferramentas MCP
+<img src="/img/auto-approving-actions/auto-approving-actions-10.png" alt="Configuração de ferramentas MCP" width="550" />
+
+**Configuração:** "Sempre aprovar ferramentas MCP"
+
+**Descrição:** "Ativar aprovação automática de ferramentas MCP individuais na visualização Servidores MCP (requer esta configuração e a caixa de seleção 'Sempre permitir' individual da ferramenta)"
+
+**Nível de risco:** Médio-Alto (depende das ferramentas MCP configuradas)
+
+Esta configuração funciona em conjunto com permissões individuais de ferramentas na visualização Servidores MCP. Tanto esta configuração global quanto a permissão específica da ferramenta devem estar ativadas para aprovação automática.
+:::
+
+### Troca de Modos
+
+:::info Troca de Modos
+<img src="/img/auto-approving-actions/auto-approving-actions-11.png" alt="Configuração de troca de modos" width="550" />
+
+**Configuração:** "Sempre aprovar troca de modos"
+
+**Descrição:** "Alternar automaticamente entre diferentes modos sem exigir aprovação"
+
+**Nível de risco:** Baixo
+
+Permite que o Roo mude entre diferentes modos (Código, Arquiteto, etc.) sem pedir permissão. Isso afeta principalmente o comportamento da IA em vez do acesso ao sistema.
+:::
+
+### Subtarefas
+
+:::info Subtarefas
+<img src="/img/auto-approving-actions/auto-approving-actions-12.png" alt="Configuração de subtarefas" width="550" />
+
+**Configuração:** "Sempre aprovar criação e conclusão de subtarefas"
+
+**Descrição:** "Permitir criação e conclusão de subtarefas sem exigir aprovação"
+
+**Nível de risco:** Baixo
+
+Permite que o Roo crie e conclua subtarefas automaticamente. Isso está relacionado à organização do fluxo de trabalho em vez de acesso ao sistema.
+:::
+
+### Execução de Comandos
+
+:::caution Execução de Comandos
+<img src="/img/auto-approving-actions/auto-approving-actions-13.png" alt="Configuração de execução de comandos com interface de lista de permissões" width="550" />
+
+**Configuração:** "Sempre aprovar operações de execução permitidas"
+
+**Descrição:** "Executar automaticamente comandos de terminal permitidos sem exigir aprovação"
+
+**Gerenciamento de comandos:** "Prefixos de comandos que podem ser executados automaticamente quando 'Sempre aprovar operações de execução' estiver ativado. Adicione * para permitir todos os comandos (use com cautela)."
+
+**Nível de risco:** Alto
+
+Esta configuração permite a execução de comandos de terminal com controles. Embora arriscada, o recurso de lista de permissões limita quais comandos podem ser executados. Recursos importantes de segurança:
+- Lista de permissões para prefixos de comandos específicos (recomendado)
+- Nunca use o curinga * em produção ou com dados sensíveis
+- Considere as implicações de segurança de cada comando permitido
+- Sempre verifique comandos que interagem com sistemas externos
+
+**Elementos da interface:**
+- Campo de texto para inserir prefixos de comandos (ex: 'git')
+- Botão "Adicionar" para adicionar novos prefixos
+- Botões de comandos clicáveis com X para removê-los
+:::

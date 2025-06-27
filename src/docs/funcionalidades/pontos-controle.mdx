@@ -1,0 +1,263 @@
+# Pontos de Controle
+
+Os Pontos de Controle versionam automaticamente os arquivos do seu workspace durante tarefas do Roo Code, permitindo exploração não destrutiva de sugestões da IA e fácil recuperação de alterações indesejadas.
+
+Pontos de Controle permitem que você:
+- Experimente com segurança alterações sugeridas pela IA
+- Recupere-se facilmente de modificações indesejadas
+- Compare diferentes abordagens de implementação
+- Reverta para estados anteriores do projeto sem perder trabalho
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+  <iframe title="Vídeo Tutorial de Pontos de Controle"
+    src="https://www.youtube.com/embed/Ho30nyY332E"
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}
+    frameBorder="0"
+    allow="autoplay; encrypted-media"
+    allowFullScreen
+  ></iframe>
+</div>
+
+<div style={{ marginTop: '20px' }}></div>
+
+:::info Notas Importantes
+- **Pontos de Controle estão habilitados por padrão.**
+- **Git deve estar instalado** para os pontos de controle funcionarem - [veja instruções de instalação](#instalacao-git)
+- Nenhuma conta GitHub ou repositório é necessária
+- Nenhuma configuração pessoal do Git é necessária
+- O repositório Git shadow opera independentemente da configuração Git existente no seu projeto
+:::
+
+---
+
+## Opções de Configuração
+
+Acesse as configurações de Pontos de Controle nas configurações do Roo Code na seção "Pontos de Controle":
+
+1. Abra Configurações clicando no ícone de engrenagem <Codicon name="gear" /> → Pontos de Controle
+2. Marque ou desmarque a caixa "Habilitar pontos de controle automáticos"
+
+   <img src="/img/checkpoints/checkpoints.png" alt="Configurações de pontos de controle na configuração do Roo Code" width="500" />
+
+---
+
+## Como os Pontos de Controle Funcionam
+
+O Roo Code captura snapshots do estado do seu projeto usando um repositório Git shadow, separado do seu sistema principal de controle de versão. Esses snapshots, chamados pontos de controle, registram automaticamente alterações durante seu fluxo de trabalho assistido por IA - sempre que tarefas começam, arquivos mudam ou comandos são executados.
+
+Pontos de controle são armazenados como commits Git no repositório shadow, capturando:
+- Alterações no conteúdo de arquivos
+- Novos arquivos adicionados
+- Arquivos deletados
+- Arquivos renomeados
+- Alterações em arquivos binários
+
+---
+
+## Trabalhando com Pontos de Controle
+
+Pontos de controle são integrados diretamente ao seu fluxo de trabalho através da interface de chat.
+
+Pontos de controle aparecem diretamente no seu histórico de chat de duas formas:
+
+- **Ponto de controle inicial** marca o estado inicial do projeto
+   <img src="/img/checkpoints/checkpoints-1.png" alt="Indicador de ponto de controle inicial no chat" width="500" />
+
+- **Pontos de controle regulares** aparecem após modificações de arquivos ou execução de comandos
+   <img src="/img/checkpoints/checkpoints-2.png" alt="Indicador de ponto de controle regular no chat" width="500" />
+
+Cada ponto de controle fornece duas funções principais:
+
+### Visualizando Diferenças
+
+Para comparar seu workspace atual com um ponto de controle anterior:
+
+1. Localize o ponto de controle no seu histórico de chat
+2. Clique no botão `Ver Diferenças` do ponto de controle
+
+   <img src="/img/checkpoints/checkpoints-6.png" alt="Interface do botão Ver Diferenças" width="100" />
+
+3. Revise as diferenças na visualização de comparação:
+   - Linhas adicionadas são destacadas em verde
+   - Linhas removidas são destacadas em vermelho
+   - Arquivos modificados são listados com alterações detalhadas
+   - Arquivos renomeados e movidos são rastreados com suas mudanças de caminho
+   - Novos ou deletados arquivos são claramente marcados
+
+<img src="/img/checkpoints/checkpoints-3.png" alt="Opção de visualizar diferenças para pontos de controle" width="800" />
+
+### Restaurando Pontos de Controle
+
+Para restaurar um projeto para um estado de ponto de controle anterior:
+
+1. Localize o ponto de controle no seu histórico de chat
+2. Clique no botão `Restaurar Ponto de Controle` do ponto de controle
+   <img src="/img/checkpoints/checkpoints-7.png" alt="Interface do botão Restaurar ponto de controle" width="100" />
+3. Escolha uma destas opções de restauração:
+
+   <img src="/img/checkpoints/checkpoints-4.png" alt="Opção de restaurar ponto de controle" width="300" />
+
+   - **Restaurar Apenas Arquivos** - Reverte apenas os arquivos do workspace para o estado do ponto de controle sem modificar o histórico da conversa. Ideal para comparar implementações alternativas mantendo o contexto do chat, permitindo alternar facilmente entre diferentes estados do projeto. Esta opção não requer confirmação e permite alternar rapidamente entre diferentes implementações.
+
+   - **Restaurar Arquivos & Tarefa** - Reverte tanto os arquivos do workspace QUANTO remove todas as mensagens subsequentes da conversa. Use quando quiser redefinir completamente tanto seu código quanto a conversa de volta ao ponto no tempo do ponto de controle. Esta opção requer confirmação em um diálogo pois não pode ser desfeita.
+
+      <img src="/img/checkpoints/checkpoints-9.png" alt="Diálogo de confirmação para restaurar ponto de controle com arquivos e tarefa" width="300" />
+
+### Limitações e Considerações
+
+- **Escopo**: Pontos de controle apenas capturam mudanças feitas durante tarefas ativas do Roo Code
+- **Alterações externas**: Modificações feitas fora de tarefas (edições manuais, outras ferramentas) não são incluídas
+- **Arquivos grandes**: Arquivos binários muito grandes podem impactar performance
+- **Trabalho não salvo**: A restauração sobrescreverá quaisquer alterações não salvas no seu workspace
+
+---
+
+## Implementação Técnica
+
+### Arquitetura dos Pontos de Controle
+
+O sistema de pontos de controle consiste em:
+
+1. **Repositório Git Shadow**: Um repositório Git separado criado especificamente para rastreamento de pontos de controle que funciona como mecanismo de armazenamento persistente para o estado dos pontos de controle.
+
+2. **Serviço de Pontos de Controle**: Gerencia operações Git e gerenciamento de estado através de:
+   - Inicialização do repositório
+   - Criação e armazenamento de pontos de controle
+   - Cálculo de diferenças
+   - Restauração de estado
+
+3. **Componentes de UI**: Elementos de interface exibidos no chat que permitem interação com os pontos de controle.
+
+### Processo de Restauração
+
+Quando a restauração é executada, o Roo Code:
+- Realiza um hard reset para o commit do ponto de controle especificado
+- Copia todos os arquivos do repositório shadow para seu workspace
+- Atualiza o estado interno de rastreamento de pontos de controle
+
+### Tipo de Armazenamento
+
+Pontos de controle são escopados por tarefa, significando que são específicos para uma única tarefa.
+
+### Cálculo de Diferenças
+
+A comparação de pontos de controle usa as capacidades de diff subjacentes do Git para produzir diferenças estruturadas de arquivos:
+- Arquivos modificados mostram alterações linha por linha
+- Arquivos binários são detectados e tratados corretamente
+- Arquivos renomeados e movidos são rastreados corretamente
+- Criação e exclusão de arquivos são claramente identificadas
+
+### Exclusão de Arquivos e Padrões Ignorados
+
+O sistema de pontos de controle usa exclusão inteligente de arquivos para rastrear apenas arquivos relevantes:
+
+#### Exclusões Integradas
+
+O sistema tem padrões de exclusão abrangentes integrados que ignoram automaticamente:
+- Artefatos de build e diretórios de dependência (`node_modules/`, `dist/`, `build/`)
+- Arquivos de mídia e assets binários (imagens, vídeos, áudio)
+- Arquivos de cache e temporários (`.cache/`, `.tmp/`, `.bak`)
+- Arquivos de configuração com informações sensíveis (`.env`)
+- Arquivos de dados grandes (arquivos compactados, executáveis, binários)
+- Arquivos de banco de dados e logs
+
+Esses padrões são escritos no arquivo `.git/info/exclude` do repositório shadow durante a inicialização.
+
+#### Suporte a .gitignore
+
+O sistema de pontos de controle respeita padrões `.gitignore` no seu workspace:
+- Arquivos excluídos por `.gitignore` não acionam criação de pontos de controle
+- Arquivos excluídos não aparecem em diffs de pontos de controle
+- Regras padrão de ignore do Git se aplicam ao preparar alterações de arquivos
+
+#### Comportamento do .rooignore
+
+O arquivo `.rooignore` (que controla acesso da IA a arquivos) é separado do rastreamento de pontos de controle:
+- Arquivos excluídos por `.rooignore` mas não por `.gitignore` ainda serão versionados
+- Alterações em arquivos inacessíveis à IA ainda podem ser restauradas através de pontos de controle
+
+Esta separação é intencional, pois `.rooignore` limita quais arquivos a IA pode acessar, não quais arquivos devem ser rastreados para histórico de versão.
+
+#### Repositórios Git Aninhados
+
+O sistema de pontos de controle inclui tratamento especial para repositórios Git aninhados:
+- Renomeia temporariamente diretórios `.git` aninhados para `.git_disabled` durante operações
+- Restaura-os após a conclusão das operações
+- Permite rastreamento adequado de arquivos em repositórios aninhados
+- Garante que repositórios aninhados permaneçam funcionais e não afetados
+
+### Controle de Concorrência
+
+Operações são enfileiradas para evitar operações Git concorrentes que possam corromper o estado do repositório. Isso garante que operações rápidas de pontos de controle sejam concluídas com segurança mesmo quando solicitadas em rápida sucessão.
+
+---
+
+## Instalação do Git
+
+Pontos de controle requerem Git instalado no seu sistema. A implementação usa a biblioteca `simple-git`, que depende de ferramentas de linha de comando do Git para criar e gerenciar repositórios shadow.
+
+### macOS
+
+1. **Instalar com Homebrew (recomendado)**:
+   ```
+   brew install git
+   ```
+
+2. **Alternativa: Instalar com Xcode Command Line Tools**:
+   ```
+   xcode-select --install
+   ```
+
+3. **Verificar instalação**:
+   - Abra Terminal
+   - Digite `git --version`
+   - Você deve ver um número de versão como `git version 2.40.0`
+
+### Windows
+
+1. **Baixar Git para Windows**:
+   - Visite https://git-scm.com/download/win
+   - O download deve começar automaticamente
+
+2. **Executar o instalador**:
+   - Aceite o contrato de licença
+   - Escolha local de instalação (padrão é recomendado)
+   - Selecione componentes (opções padrão são normalmente suficientes)
+   - Escolha o editor padrão
+   - Escolha como usar Git da linha de comando (recomendado: Git da linha de comando e também de software de terceiros)
+   - Configure conversões de fim de linha (recomendado: Checkout estilo Windows, commit estilo Unix)
+   - Complete a instalação
+
+3. **Verificar instalação**:
+   - Abra Command Prompt ou PowerShell
+   - Digite `git --version`
+   - Você deve ver um número de versão como `git version 2.40.0.windows.1`
+
+### Linux
+
+**Debian/Ubuntu**:
+```
+sudo apt update
+sudo apt install git
+```
+
+**Fedora**:
+```
+sudo dnf install git
+```
+
+**Arch Linux**:
+```
+sudo pacman -S git
+```
+
+**Verificar instalação**:
+- Abra Terminal
+- Digite `git --version`
+- Você deve ver um número de versão

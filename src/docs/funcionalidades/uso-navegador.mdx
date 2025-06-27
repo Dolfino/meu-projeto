@@ -1,0 +1,192 @@
+# Uso do Navegador
+
+O Roo Code fornece capacidades sofisticadas de automação de navegador que permitem interagir com sites diretamente do VS Code. Este recurso permite testar aplicações web, automatizar tarefas no navegador e capturar screenshots sem sair do seu ambiente de desenvolvimento.
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+  <iframe
+    src="https://www.youtube.com/embed/SJae206swxA"
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}
+    frameBorder="0"
+    allow="autoplay; encrypted-media"
+    allowFullScreen
+  ></iframe>
+</div>
+
+<div style={{ marginTop: '20px' }}></div>
+
+:::caution Suporte do Modelo Necessário
+O Uso do Navegador no Roo Code requer o uso do Claude Sonnet 3.5 ou 3.7
+:::
+
+---
+
+## Como o Uso do Navegador Funciona
+
+Por padrão, o Roo Code usa um navegador integrado que:
+- É iniciado automaticamente quando você pede ao Roo para visitar um site
+- Captura screenshots de páginas web
+- Permite que o Roo interaja com elementos da web
+- Executa em segundo plano de forma invisível
+
+Tudo isso acontece diretamente dentro do VS Code, sem necessidade de configuração.
+
+---
+
+## Usando o Navegador
+
+Uma interação típica com o navegador segue este padrão:
+
+**Importante:** O Uso do Navegador requer o modelo Claude Sonnet 3.5 ou 3.7.
+
+1. Peça ao Roo para visitar um site
+2. O Roo inicia o navegador e mostra um screenshot
+3. Solicite ações adicionais (clicar, digitar, rolar)
+4. O Roo fecha o navegador quando terminar
+
+Por exemplo:
+
+```
+Abra o navegador e visualize nosso site.
+```
+
+```
+Você pode verificar se meu site em https://roocode.com está sendo exibido corretamente?
+```
+
+```
+Navegue para http://localhost:3000, role até o final da página e verifique se as informações do rodapé estão sendo exibidas corretamente.
+```
+
+<img src="/img/browser-use/browser-use-1.png" alt="Exemplo de uso do navegador" width="300" />
+
+---
+
+## Como as Ações do Navegador Funcionam
+
+A ferramenta browser_action controla uma instância do navegador que retorna screenshots e logs do console após cada ação, permitindo que você veja os resultados das interações.
+
+Características principais:
+- Cada sessão do navegador deve começar com `launch` e terminar com `close`
+- Apenas uma ação do navegador pode ser usada por mensagem
+- Enquanto o navegador está ativo, nenhuma outra ferramenta pode ser usada
+- Você deve aguardar a resposta (screenshot e logs) antes de realizar a próxima ação
+
+### Ações Disponíveis no Navegador
+
+| Ação | Descrição | Quando Usar |
+|--------|-------------|------------|
+| `launch` | Abre um navegador em uma URL | Iniciando uma nova sessão |
+| `click` | Clica em coordenadas específicas | Interagindo com botões, links, etc. |
+| `type` | Digita texto no elemento ativo | Preenchendo formulários, caixas de pesquisa |
+| `scroll_down` | Rola para baixo uma página | Visualizando conteúdo abaixo do dobramento |
+| `scroll_up` | Rola para cima uma página | Retornando ao conteúdo anterior |
+| `close` | Fecha o navegador | Encerrando uma sessão |
+
+---
+
+## Configurações do Uso do Navegador
+
+:::info Configurações Padrão do Navegador
+- **Habilitar ferramenta de navegador**: Habilitado
+- **Tamanho da viewport**: Desktop Pequeno (900x600)
+- **Qualidade do screenshot**: 75%
+- **Usar conexão remota do navegador**: Desabilitado
+:::
+
+### Acessando as Configurações
+
+Para alterar as configurações de Uso do Navegador/Computador no Roo:
+
+1. Abra as Configurações clicando no ícone de engrenagem <Codicon name="gear" /> → Uso do Navegador/Computador
+
+   <img src="/img/browser-use/browser-use.png" alt="Menu de configurações do navegador" width="600" />
+
+### Habilitar/Desabilitar Uso do Navegador
+
+**Propósito**: Interruptor mestre que permite ao Roo interagir com sites usando um navegador controlado por Puppeteer.
+
+Para alterar esta configuração:
+1. Marque ou desmarque a caixa "Habilitar ferramenta de navegador" nas configurações de Uso do Navegador/Computador
+
+   <img src="/img/browser-use/browser-use-2.png" alt="Configuração de habilitar ferramenta de navegador" width="300" />
+
+### Tamanho da Viewport
+
+**Propósito**: Determina a resolução da sessão do navegador que o Roo Code usa.
+
+**Compromisso**: Valores maiores fornecem uma viewport maior, mas aumentam o uso de tokens.
+
+Para alterar esta configuração:
+1. Clique no menu suspenso em "Tamanho da viewport" nas configurações de Uso do Navegador/Computador
+2. Selecione uma das opções disponíveis:
+   - Desktop Grande (1280x800)
+   - Desktop Pequeno (900x600) - Padrão
+   - Tablet (768x1024)
+   - Mobile (360x640)
+3. Selecione a resolução desejada.
+
+   <img src="/img/browser-use/browser-use-3.png" alt="Configuração de tamanho da viewport" width="600" />
+
+### Qualidade do Screenshot
+
+**Propósito**: Controla a qualidade de compressão WebP dos screenshots do navegador.
+
+**Compromisso**: Valores maiores fornecem screenshots mais claros, mas aumentam o uso de tokens.
+
+Para alterar esta configuração:
+1. Ajuste o controle deslizante em "Qualidade do screenshot" nas configurações de Uso do Navegador/Computador
+2. Defina um valor entre 1-100% (padrão é 75%)
+3. Valores maiores fornecem screenshots mais claros, mas aumentam o uso de tokens:
+   - 40-50%: Bom para sites baseados principalmente em texto
+   - 60-70%: Balanceado para a maioria das navegações gerais
+   - 80%+: Use quando detalhes visuais finos são críticos
+
+   <img src="/img/browser-use/browser-use-4.png" alt="Configuração de qualidade do screenshot" width="600" />
+
+### Conexão Remota do Navegador
+
+**Propósito**: Conecta o Roo a um navegador Chrome existente em vez de usar o navegador integrado.
+
+**Benefícios**:
+- Funciona em ambientes containerizados e fluxos de trabalho de desenvolvimento remoto
+- Mantém sessões autenticadas entre usos do navegador
+- Elimina etapas repetitivas de login
+- Permite o uso de perfis de navegador personalizados com extensões específicas
+
+**Requisitos**: O Chrome deve estar em execução com depuração remota habilitada.
+
+Para habilitar este recurso:
+1. Marque a caixa "Usar conexão remota do navegador" nas configurações de Uso do Navegador/Computador
+2. Clique em "Testar Conexão" para verificar
+
+   <img src="/img/browser-use/browser-use-5.png" alt="Configuração de conexão remota do navegador" width="600" />
+
+#### Casos de Uso Comuns
+
+- **DevContainers**: Conecte do VS Code containerizado ao navegador Chrome do host
+- **Desenvolvimento Remoto**: Use o Chrome local com servidor VS Code remoto
+- **Perfis Personalizados do Chrome**: Use perfis com extensões e configurações específicas
+
+#### Conectando a uma Janela Visível do Chrome
+
+Conecte-se a uma janela visível do Chrome para observar as interações do Roo em tempo real:
+
+**macOS**
+```bash
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug --no-first-run
+```
+
+**Windows**
+```bash
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir=C:\chrome-debug --no-first-run
+```
+
+**Linux**
+```bash
+google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug --no-first-run

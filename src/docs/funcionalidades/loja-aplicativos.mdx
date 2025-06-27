@@ -1,0 +1,161 @@
+---
+title: Loja de Aplicativos
+description: Descubra e instale modos e MCPs para estender as capacidades do Roo Code
+---
+import Codicon from '@site/src/components/Codicon';
+
+# Loja de Aplicativos do Roo Code
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+  <iframe
+    src="https://www.youtube.com/embed/WatooxMlW0U"
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}
+    frameBorder="0"
+    allow="autoplay; encrypted-media"
+    allowFullScreen
+  ></iframe>
+</div>
+
+<div style={{ marginTop: '20px' }}></div>
+
+---
+
+## Visão Geral
+
+A Loja de Aplicativos do Roo Code é um hub central para descobrir e instalar extensões contribuídas pela comunidade, conhecidas como MCPs (Protocolo de Contexto de Modelo) e Modos. Ela permite que você estenda facilmente a funcionalidade do Roo Code para atender às suas necessidades e fluxos de trabalho específicos.
+
+### Principais Recursos
+- **Descoberta**: Navegue por uma lista curada de MCPs e Modos.
+- **Instalação Simples**: Instale e remova itens com um único clique.
+- **Dirigido pela Comunidade**: Acesse uma coleção crescente de extensões da comunidade do Roo Code.
+- **Escopos de Projeto e Global**: Instale itens para um projeto específico ou para todos os seus projetos.
+
+---
+
+## Começando
+
+A Loja de Aplicativos do Roo Code está disponível diretamente na extensão do Roo Code no VS Code. Acesse-a clicando no ícone da loja <Codicon name="extensions" /> na barra de menu superior.
+
+---
+
+## Itens da Loja
+
+A loja oferece dois tipos de itens:
+
+### MCPs (Protocolo de Contexto de Modelo)
+Os MCPs permitem que o Roo Code se conecte e interaja com vários modelos de IA, APIs e outras ferramentas externas. Ao instalar um MCP, você pode configurar o Roo Code para usar diferentes modelos de linguagem (como os da OpenAI, Anthropic ou outros) ou para integrar com outros serviços. Saiba mais sobre [O que é MCP?](/features/mcp/what-is-mcp) e [como usar MCP no Roo Code](/features/mcp/using-mcp-in-roo).
+
+<img src="/img/marketplace/marketplace-1.png" alt="Aba MCP mostrando MCPs disponíveis com botões de instalar e remover" width="500" />
+
+### Modos
+Modos são conjuntos personalizados de instruções e regras que adaptam o comportamento do Roo Code para tarefas específicas. Por exemplo, você pode encontrar um modo "Componente React" otimizado para criar componentes React, ou um modo "Escritor de Documentação" para escrever documentação técnica. Saiba mais sobre [usando modos](/basic-usage/using-modes) e [criando modos personalizados](/features/custom-modes).
+
+<img src="/img/marketplace/marketplace-4.png" alt="Aba Modos mostrando modos disponíveis" width="500" />
+
+---
+
+## Escopo de Instalação
+
+Quando você instala um item da loja, pode escolher instalá-lo no nível do projeto ou no nível global.
+
+### Instalação de Projeto
+- **Escopo**: O item está disponível apenas dentro do workspace atual do VS Code (seu projeto).
+- **Arquivo de Configuração**:
+    - **MCPs**: [`.roo/mcp.json`](/features/mcp/using-mcp-in-roo#configuring-mcp-servers) na raiz do seu projeto.
+    - **Modos**: [`.roomodes`](/features/custom-modes#3-manual-configuration-yaml--json) na raiz do seu projeto.
+- **Caso de Uso**: Útil quando um item é específico para as necessidades de um projeto particular ou quando você deseja compartilhar uma configuração específica do projeto com sua equipe.
+
+### Instalação Global
+- **Escopo**: O item está disponível em todos os seus workspaces do VS Code.
+- **Arquivo de Configuração**:
+    - **MCPs**: [`mcp_settings.json`](/features/mcp/using-mcp-in-roo#configuring-mcp-servers) no diretório de configurações globais da extensão Roo Code.
+    - **Modos**: [`custom_modes.yaml`](/features/custom-modes) no diretório de configurações globais da extensão Roo Code.
+- **Caso de Uso**: Ideal para itens que você deseja usar em todos os seus projetos, como um Modo favorito ou um MCP comumente usado.
+
+---
+
+## Usando a Loja
+
+### Navegando e Filtrando
+
+Você pode navegar por todos os itens disponíveis na visualização da loja. Para encontrar itens específicos:
+- **Pesquisar**: Use a barra de pesquisa para encontrar itens por nome ou descrição.
+- **Filtrar por Tipo**: Mostre apenas MCPs ou apenas Modos.
+- **Filtrar por Tags**: Encontre itens relacionados a tecnologias ou tarefas específicas.
+
+### Instalando um Item
+
+1. Encontre o item que deseja instalar.
+2. Clique no botão "Instalar".
+3. Escolha se deseja instalá-lo para o **Projeto** atual ou **Globalmente**.
+
+#### Instalando MCPs
+<img src="/img/marketplace/marketplace-3.png" alt="Modal de instalação de MCP mostrando opções de escopo e método de instalação" width="500" />
+
+Para MCPs, você também pode precisar:
+- Selecionar um método de instalação (NPX ou Docker)
+- Fornecer parâmetros adicionais quando solicitado (veja [MCPs Parametrizados](#mcps-parametrizados))
+
+#### Instalando Modos
+<img src="/img/marketplace/marketplace-5.png" alt="Modal de instalação de Modo mostrando opções de escopo de instalação" width="500" />
+
+Para Modos, simplesmente selecione o escopo de instalação e clique em Instalar.
+
+5. O Roo Code adiciona automaticamente o item ao arquivo de configuração apropriado. Se o arquivo não existir, o Roo Code o criará para você. O arquivo é então aberto para sua revisão.
+
+### Removendo um Item
+
+1. Encontre o item instalado na visualização da loja (itens instalados mostram um botão "Remover").
+2. Clique no botão "Remover".
+3. Se o item estiver instalado em ambos os escopos, escolha remover do projeto atual ou remover globalmente.
+4. O Roo Code remove o item do arquivo de configuração correspondente.
+
+**Observação:** O botão "Remover" é sensível ao contexto. Se um item estiver instalado em apenas um escopo (ex: apenas para o projeto), será um botão de ação única. O menu suspenso com opções "Remover do Projeto" e "Remover Globalmente" só aparece se o item estiver instalado em ambos os escopos.
+
+**Importante:** A remoção é imediata após clicar no botão ou selecionar uma opção do menu suspenso. Não há prompt de confirmação adicional.
+
+### MCPs Parametrizados
+
+<img src="/img/marketplace/marketplace-6.png" alt="Instalação de MCP parametrizado mostrando entrada de chave de API e pré-requisitos" width="500" />
+
+Alguns MCPs exigem informações específicas durante a instalação, como chaves de API ou URLs. Ao instalar esses MCPs "parametrizados", você será solicitado a:
+- Revisar quaisquer pré-requisitos (como criar contas ou obter chaves de API)
+- Inserir valores de configuração necessários
+- Selecionar o método de instalação, se aplicável
+
+Isso mantém as informações sensíveis seguras e torna a configuração mais flexível.
+
+---
+
+## Solução de Problemas
+
+### Erros de Instalação
+- **YAML/JSON Inválido**: O arquivo de configuração (`.roomodes`, `.roo/mcp.json`, etc.) tem um erro de sintaxe. Para evitar perda de dados, o Roo Code não modificará um arquivo de configuração corrompido. Corrija o erro de sintaxe antes de instalar ou remover itens.
+- **Arquivo Não Encontrado**: Erro raro - o Roo Code cria automaticamente os arquivos de configuração necessários.
+
+### Item Não Funcionando
+Se um item instalado não estiver funcionando:
+1. **Verifique o arquivo de configuração**: Confirme se o item foi adicionado corretamente.
+2. **Reinicie o VS Code**: Novas configurações às vezes exigem uma reinicialização.
+3. **Verifique pré-requisitos**: Revise a descrição do item para quaisquer requisitos.
+4. **Verifique os logs do Roo Code**: Procure mensagens de erro no painel de saída do Roo Code.
+
+---
+
+## Documentação Relacionada
+
+### Para MCPs
+- [Visão Geral do MCP](/features/mcp/overview) - Guia abrangente para o Protocolo de Contexto de Modelo
+- [O que é MCP?](/features/mcp/what-is-mcp) - Entendendo os fundamentos
+- [Usando MCP no Roo Code](/features/mcp/using-mcp-in-roo) - Guia detalhado de configuração e uso
+- [Servidores MCP Recomendados](/features/mcp/recommended-mcp-servers) - Lista curada de servidores testados
+
+### Para Modos
+- [Usando Modos](/basic-usage/using-modes) - Aprenda sobre modos integrados e como alternar entre eles
+- [Modos Personalizados](/features/custom-modes) - Crie e configure seus próprios modos especializados

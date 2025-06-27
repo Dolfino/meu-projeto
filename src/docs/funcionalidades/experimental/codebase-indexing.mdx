@@ -1,0 +1,242 @@
+import Codicon from '@site/src/components/Codicon';
+
+# Indexação de Código Base
+
+**⚠️ Recurso Experimental:** Este recurso está em desenvolvimento ativo e pode mudar significativamente em versões futuras.
+
+A Indexação de Código Base permite busca semântica em todo o seu projeto usando embeddings de IA. Em vez de buscar correspondências exatas de texto, ela entende o *significado* de suas consultas, ajudando o Roo Code a encontrar código relevante mesmo quando você não conhece nomes específicos de funções ou locais de arquivos.
+
+<img src="/img/codebase-indexing/codebase-indexing.png" alt="Configurações de Indexação de Código Base" width="800" />
+
+---
+
+## O Que Faz
+
+Quando ativado, o sistema de indexação:
+
+1. **Analisa seu código** usando Tree-sitter para identificar blocos semânticos (funções, classes, métodos)
+2. **Cria embeddings** de cada bloco de código usando modelos de IA
+3. **Armazena vetores** em um banco de dados Qdrant para busca por similaridade rápida
+4. **Fornece a ferramenta [`codebase_search`](/advanced-usage/available-tools/codebase-search)** ao Roo para descoberta inteligente de código
+
+Isso permite consultas em linguagem natural como "lógica de autenticação de usuário" ou "configuração de conexão com banco de dados" para encontrar código relevante em todo o projeto.
+
+---
+
+## Principais Benefícios
+
+- **Busca Semântica**: Encontre código por significado, não apenas palavras-chave
+- **Melhor Compreensão da IA**: Roo pode entender e trabalhar melhor com sua base de código
+- **Descoberta Entre Projetos**: Busca em todos os arquivos, não apenas nos abertos
+- **Reconhecimento de Padrões**: Localize implementações e padrões de código similares
+
+---
+
+## Requisitos de Configuração
+
+### Provedor de Embeddings
+
+Escolha uma destas opções para gerar embeddings:
+
+**OpenAI (Recomendado)**
+- Requer chave de API da OpenAI
+- Suporta todos os modelos de embedding da OpenAI
+- Padrão: `text-embedding-3-small`
+- Processa até 100.000 tokens por lote
+
+**Ollama (Local)**
+- Requer instalação local do Ollama
+- Sem custos de API ou dependência de internet
+- Suporta qualquer modelo de embedding compatível com Ollama
+- Requer configuração da URL base do Ollama
+
+### Setting Up Ollama for Embeddings
+
+1. **Install Ollama**
+   - **macOS**: `brew install ollama` or download from [ollama.com](https://ollama.com)
+   - **Linux**: `curl -fsSL https://ollama.com/install.sh | sh`
+   - **Windows**: Download installer from [ollama.com](https://ollama.com)
+
+2. **Start Ollama Service**
+   ```bash
+   ollama serve
+   ```
+   This starts Ollama on `http://localhost:11434` (default port)
+
+3. **Install Embedding Model**
+   ```bash
+   ollama pull nomic-embed-text
+   ```
+   This downloads the recommended embedding model (~274MB)
+
+4. **Verify Installation**
+   ```bash
+   ollama list
+   ```
+   You should see `nomic-embed-text` in the list
+
+5. **Configure in Roo Code**
+   - Set Ollama Base URL: `http://localhost:11434`
+   - Select Model: `nomic-embed-text`
+
+### Vector Database
+
+**Qdrant** is required for storing and searching embeddings:
+- **Local**: `http://localhost:6333` (recommended for testing)
+- **Cloud**: Qdrant Cloud or self-hosted instance
+- **Authentication**: Optional API key for secured deployments
+
+---
+
+## Setting Up Qdrant
+
+### Quick Local Setup
+
+**Using Docker:**
+```bash
+docker run -p 6333:6333 qdrant/qdrant
+```
+
+**Using Docker Compose:**
+```yaml
+version: '3.8'
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+volumes:
+  qdrant_storage:
+```
+
+### Production Deployment
+
+For team or production use:
+- [Qdrant Cloud](https://cloud.qdrant.io/) - Managed service
+- Self-hosted on AWS, GCP, or Azure
+- Local server with network access for team sharing
+
+---
+
+## Configuration
+
+1. Open Roo Code settings (<Codicon name="gear" /> icon)
+2. Navigate to **Experimental** section
+3. Enable **"Enable Codebase Indexing"**
+4. Configure your embedding provider:
+   - **OpenAI**: Enter API key and select model
+   - **Ollama**: Enter base URL and select model
+5. Set Qdrant URL and optional API key
+6. Click **Save** to start initial indexing
+
+---
+
+## Understanding Index Status
+
+The interface shows real-time status with color indicators:
+
+- **Standby** (Gray): Not running, awaiting configuration
+- **Indexing** (Yellow): Currently processing files
+- **Indexed** (Green): Up-to-date and ready for searches
+- **Error** (Red): Failed state requiring attention
+
+---
+
+## How Files Are Processed
+
+### Smart Code Parsing
+- **Tree-sitter Integration**: Uses AST parsing to identify semantic code blocks
+- **Language Support**: All languages supported by Tree-sitter
+- **Fallback**: Line-based chunking for unsupported file types
+- **Block Sizing**:
+  - Minimum: 100 characters
+  - Maximum: 1,000 characters
+  - Splits large functions intelligently
+
+### Automatic File Filtering
+The indexer automatically excludes:
+- Binary files and images
+- Large files (&gt;1MB)
+- Git repositories (`.git` folders)
+- Dependencies (`node_modules`, `vendor`, etc.)
+- Files matching `.gitignore` and `.rooignore` patterns
+
+### Incremental Updates
+- **File Watching**: Monitors workspace for changes
+- **Smart Updates**: Only reprocesses modified files
+- **Hash-based Caching**: Avoids reprocessing unchanged content
+- **Branch Switching**: Automatically handles Git branch changes
+
+---
+
+## Best Practices
+
+### Model Selection
+
+**For OpenAI:**
+- **`text-embedding-3-small`**: Best balance of performance and cost
+- **`text-embedding-3-large`**: Higher accuracy, 5x more expensive
+- **`text-embedding-ada-002`**: Legacy model, lower cost
+
+**For Ollama:**
+- **`mxbai-embed-large`**: The largest and highest-quality embedding model.
+- **`nomic-embed-text`**: Best balance of performance and embedding quality.
+- **`all-minilm`**: Compact model with lower quality but faster performance.
+
+### Security Considerations
+- **API Keys**: Stored securely in VS Code's encrypted storage
+- **Code Privacy**: Only small code snippets sent for embedding (not full files)
+- **Local Processing**: All parsing happens locally
+- **Qdrant Security**: Use authentication for production deployments
+
+---
+
+## Current Limitations
+
+- **File Size**: 1MB maximum per file
+- **Markdown**: Not currently supported due to parsing complexity
+- **Single Workspace**: One workspace at a time
+- **Dependencies**: Requires external services (embedding provider + Qdrant)
+- **Language Coverage**: Limited to Tree-sitter supported languages
+
+---
+
+## Using the Search Feature
+
+Once indexed, Roo can use the [`codebase_search`](/advanced-usage/available-tools/codebase-search) tool to find relevant code:
+
+**Example Queries:**
+- "How is user authentication handled?"
+- "Database connection setup"
+- "Error handling patterns"
+- "API endpoint definitions"
+
+The tool provides Roo with:
+- Relevant code snippets
+- File paths and line numbers
+- Similarity scores
+- Contextual information
+
+---
+
+## Privacy & Security
+
+- **Code stays local**: Only small code snippets sent for embedding
+- **Embeddings are numeric**: Not human-readable representations
+- **Secure storage**: API keys encrypted in VS Code storage
+- **Local option**: Use Ollama for completely local processing
+- **Access control**: Respects existing file permissions
+
+---
+
+## Future Enhancements
+
+Planned improvements:
+- Additional embedding providers
+- Improved markdown and documentation support
+- Multi-workspace indexing
+- Enhanced filtering and configuration options
+- Team sharing capabilities
+- Integration with VS Code's native search

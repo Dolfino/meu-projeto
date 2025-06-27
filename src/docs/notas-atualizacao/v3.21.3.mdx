@@ -1,0 +1,12 @@
+# Notas de Versão Roo Code 3.21.3 (2025-06-21)
+
+Esta versão adiciona limites de condensação de contexto específicos por perfil e corrige vários bugs relacionados a tamanho de contexto e tratamento de erros.
+
+## Melhorias de Qualidade de Vida
+
+*   **Limites de Contexto por Perfil**: Agora você pode configurar limites diferentes para condensação inteligente de contexto para cada um dos seus perfis de configuração de API. Isso dá um controle mais granular sobre o gerenciamento de contexto, especialmente útil ao trabalhar com múltiplos modelos que têm tamanhos diferentes de janela de contexto (agradecimentos a SannidhyaSah, SirBadfish!) ([#4456](https://github.com/RooCodeInc/Roo-Code/pull/4456)).
+
+## Correções de Bugs
+
+*   **Tamanho de Contexto Ollama & LM Studio**: O tamanho de contexto para modelos servidos por Ollama e LM Studio agora é detectado automaticamente e exibido corretamente, eliminando a necessidade de configuração manual (agradecimentos a thecolorblue, Fade78!) ([#4314](https://github.com/RooCodeInc/Roo-Code/pull/4314)).
+*   **UI de Ferramentas MCP**: Corrigido problema onde o ícone de olho para ferramentas MCP mostrava estado incorreto e estava visível em contextos de chat onde deveria estar oculto (agradecimentos a daniel-lxs!) ([#4994](https://github.com/RooCodeInc/Roo-Code/pull/4994)).

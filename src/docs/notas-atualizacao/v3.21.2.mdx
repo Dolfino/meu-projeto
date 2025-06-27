@@ -1,0 +1,19 @@
+# Notas de Versão Roo Code 3.21.2 (2025-06-21)
+Esta versão introduz renderização LaTeX, um novo toggle para ferramentas MCP e corrige vários bugs relacionados ao marketplace, subtarefas e precificação.
+
+## Novos Recursos
+* **Renderização LaTeX**: Agora você pode renderizar equações matemáticas em LaTeX diretamente na janela de chat (agradecimentos a ColbySerpa!) ([#4786](https://github.com/RooCodeInc/Roo-Code/pull/4786))
+* **Toggle de Ferramentas MCP**: Um novo toggle permite desativar ferramentas individuais de servidores MCP do contexto do prompt (agradecimentos a Rexarrior!) ([#3551](https://github.com/RooCodeInc/Roo-Code/pull/3551))
+* **Suporte a Symlink**: A ferramenta `list_files` agora suporta links simbólicos (agradecimentos a josh-clanton-powerschool!) ([#4859](https://github.com/RooCodeInc/Roo-Code/pull/4859))
+
+## Correções de Bugs
+* **Marketplace**: Corrigido problema onde o marketplace ficava em branco após ser populado e resolvidos problemas de timeout (agradecimentos a yangbinbin48!) ([#4941](https://github.com/RooCodeInc/Roo-Code/pull/4941))
+* **@mention**: Corrigido problema com varredura recursiva de diretórios ao usar "Add Folder" com @mention (agradecimentos a village-way!) ([#4863](https://github.com/RooCodeInc/Roo-Code/pull/4863))
+* **Subtarefas**: Resolvido problema onde um "Resultados de Subtarefa" fantasma aparecia se uma tarefa fosse cancelada durante uma tentativa de API. ([#4893](https://github.com/RooCodeInc/Roo-Code/pull/4893))
+* **Precificação**: Corrigida a precificação para o modelo Gemini 2.5 Flash (agradecimentos a sr-tream!) ([#4898](https://github.com/RooCodeInc/Roo-Code/pull/4898))
+* **Markdown**: Corrigido problema com renderização de markdown para links seguidos por pontuação. ([#4841](https://github.com/RooCodeInc/Roo-Code/pull/4841))
+
+## Melhorias de Qualidade de Vida
+* **Onboarding**: Ajustes no processo de onboarding para destacar melhor os modos. ([#4791](https://github.com/RooCodeInc/Roo-Code/pull/4791))
+* **Orquestração de Tarefas**: Renomeado "Tarefas Boomerang" para "Orquestração de Tarefas" para maior clareza. ([#4856](https://github.com/RooCodeInc/Roo-Code/pull/4856))
+* **`attempt_completion`**: A ferramenta `attempt_completion` não executa mais comandos. Esta é uma mudança permanente e a configuração experimental foi removida. ([#4884](https://github.com/RooCodeInc/Roo-Code/pull/4884))

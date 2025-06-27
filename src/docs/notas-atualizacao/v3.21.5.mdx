@@ -1,0 +1,9 @@
+# Notas de Versão Roo Code 3.21.5 (2025-06-23)
+
+Esta versão de correção resolve problemas com manipulação de URLs no QdrantClient, melhora a detecção de modelos no LM Studio e corrige problemas de análise JSON no Claude Code.
+
+## Correções de Bugs
+
+* **Qdrant Vector Store**: Corrigido o tratamento de prefixos de URL durante a inicialização do QdrantClient para implantações com prefixos de caminho (agradecimentos a CW-B-W!) ([#5033](https://github.com/RooCodeInc/Roo-Code/pull/5033))
+* **Claude Code Provider**: Resolvidos problemas de análise JSON e melhorada exibição de blocos de raciocínio para mostrar blocos recolhíveis ao invés de JSON bruto (agradecimentos a hannesrudolph!) ([#5049](https://github.com/RooCodeInc/Roo-Code/pull/5049))
+* **LM Studio**: Melhorada detecção de modelos para exibir todos os modelos baixados ao invés de apenas os modelos carregados atualmente (agradecimentos a daniel-lxs!) ([#5047](https://github.com/RooCodeInc/Roo-Code/pull/5047))

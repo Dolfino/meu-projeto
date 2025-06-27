@@ -1,0 +1,111 @@
+---
+sidebar_label: 'Tarefas Bumerangue'
+---
+
+# Tarefas Bumerangue: Orquestrando Fluxos de Trabalho Complexos
+
+As Tarefas Bumerangue (também conhecidas como subtarefas ou orquestração de tarefas) permitem que você divida projetos complexos em partes menores e gerenciáveis usando o modo **`🪃 Orchestrator` (também conhecido como Modo Bumerangue)**. Pense nisso como delegar partes do seu trabalho para assistentes especializados. Cada subtarefa é executada em seu próprio contexto, geralmente usando um modo diferente do Roo Code adequado para aquele trabalho específico (como [`💻 Código`](/basic-usage/using-modes#code-mode-default), [`🏗️ Arquiteto`](/basic-usage/using-modes#architect-mode), ou [`🪲 Depuração`](/basic-usage/using-modes#debug-mode)). O modo Orchestrator gerencia esse processo.
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+  <iframe
+    src="https://www.youtube.com/embed/RX862U09fnE"
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}
+    frameBorder="0"
+    allow="autoplay; encrypted-media"
+    allowFullScreen
+  ></iframe>
+</div>
+
+<br />
+
+:::info O Modo Orchestrator é Integrado
+O modo `🪃 Orchestrator` (anteriormente alcançado via um "Modo Bumerangue" personalizado) agora é um modo integrado projetado especificamente para orquestrar fluxos de trabalho, dividindo tarefas e delegando-as para outros modos. Você não precisa mais criar um modo personalizado para essa funcionalidade.
+
+Saiba mais sobre [Modos Integrados](/basic-usage/using-modes#built-in-modes).
+:::
+
+---
+
+## Por que usar Tarefas Bumerangue?
+
+-   **Lidar com Complexidade:** Divida projetos grandes e com múltiplas etapas (ex: construir uma funcionalidade completa) em subtarefas focadas (ex: design, implementação, documentação).
+-   **Usar Modos Especializados:** Delegue automaticamente subtarefas para o modo mais adequado para aquele trabalho específico, aproveitando capacidades especializadas para resultados ótimos.
+-   **Manter Foco e Eficiência:** Cada subtarefa opera em seu próprio contexto isolado com um histórico de conversa separado. Isso evita que a tarefa principal (orquestrador) fique sobrecarregada com etapas detalhadas de execução (como diffs de código ou resultados de análise de arquivos), permitindo que ela se concentre eficientemente no fluxo de trabalho de alto nível e gerencie o processo geral com base em resumos concisos das subtarefas concluídas.
+-   **Otimizar Fluxos de Trabalho:** Resultados de uma subtarefa podem ser automaticamente passados para a próxima, criando um fluxo suave (ex: decisões de arquitetura alimentando a tarefa de codificação).
+
+---
+
+## Como Funciona
+
+1.  Quando no modo [`🪃 Orchestrator`](/basic-usage/using-modes#orchestrator-mode-aka-boomerang-mode) (também conhecido como Modo Bumerangue), o Roo analisa uma tarefa complexa e sugere dividi-la em uma subtarefa[^1].
+
+2.  A tarefa principal (no modo Orchestrator) pausa, e a nova subtarefa começa em um modo diferente e especializado[^2].
+3.  Quando o objetivo da subtarefa é alcançado, o Roo sinaliza a conclusão.
+4.  A tarefa principal retoma com apenas o resumo[^3] da subtarefa. A tarefa principal usa esse resumo para continuar o fluxo de trabalho principal.
+
+---
+
+## Considerações Importantes
+
+-   **Aprovação Necessária:** Por padrão, você deve aprovar a criação e conclusão de cada subtarefa. Isso pode ser automatizado através das configurações de [Ações de Aprovação Automática](/features/auto-approving-actions#subtasks) se desejado.
+-   **Isolamento e Transferência de Contexto:** Cada subtarefa opera em completo isolamento com seu próprio histórico de conversa. Ela não herda automaticamente o contexto da tarefa principal. As informações devem ser explicitamente passadas:
+    *   **Para Baixo:** Através das instruções iniciais fornecidas quando a subtarefa é criada.
+    *   **Para Cima:** Através do resumo final fornecido quando a subtarefa termina. Esteja ciente de que apenas este resumo retorna para a tarefa principal.
+-   **Navegação:** A interface do Roo ajuda você a ver a hierarquia de tarefas (qual tarefa é a principal, quais são as secundárias). Você pode normalmente navegar entre tarefas ativas e pausadas.
+
+As Tarefas Bumerangue fornecem uma maneira poderosa de gerenciar fluxos de trabalho complexos de desenvolvimento diretamente no Roo Code, aproveitando modos especializados para máxima eficiência.
+
+:::tip Mantenha as Tarefas Focadas
+Use subtarefas (delegadas via modo Orchestrator) para manter a clareza. Se uma solicitação mudar significativamente o foco ou exigir uma expertise diferente (modo), considere criar uma subtarefa em vez de sobrecarregar a atual.
+:::
+
+---
+
+## Perguntas Frequentes
+
+### Por que o modo Orchestrator não pode ler arquivos, gravar arquivos, chamar MCPs ou executar comandos?
+
+O modo Orchestrator é intencionalmente limitado para se concentrar no gerenciamento de fluxo de trabalho de alto nível. Dar a ele a capacidade de ler arquivos por padrão faz com que o contexto fique preenchido com leituras de arquivos, prejudicando sua capacidade de permanecer focado na orquestração. A filosofia de design é que as subtarefas devem lidar com o trabalho detalhado e retornar apenas as informações necessárias (através de seus resumos de conclusão) para que o orquestrador delegue tarefas adicionais de forma eficaz.
+
+Essa limitação ajuda a prevenir [contaminação de contexto](/advanced-usage/context-poisoning), onde informações irrelevantes ou excessivas contaminam o contexto ativo do modelo, levando a desempenho degradado e desvio da tarefa.
+
+### Como posso substituir as limitações do modo Orchestrator?
+
+Você pode [personalizar o modo Orchestrator](/features/custom-modes) para adicionar capacidades como leitura de arquivos seguindo o sistema de [precedência de configuração](/features/custom-modes#configuration-precedence):
+
+1. Abra a Paleta de Comandos e selecione **"Editar Modos Globais"**
+2. Copie e cole esta configuração:
+
+```json
+{
+  "customModes": [
+    {
+      "slug": "orchestrator",
+      "name": "🪃 Orchestrator",
+      "roleDefinition": "Você é o Roo, um orquestrador estratégico de fluxos de trabalho que coordena tarefas complexas delegando-as para modos especializados apropriados. Você tem um entendimento abrangente das capacidades e limitações de cada modo, permitindo que você divida problemas complexos em tarefas discretas que podem ser resolvidas por diferentes especialistas.",
+      "customInstructions": "Seu papel é coordenar fluxos de trabalho complexos delegando tarefas para modos especializados. Como orquestrador, você deve:\n\n1. Quando receber uma tarefa complexa, divida-a em subtarefas lógicas que podem ser delegadas para modos especializados apropriados.\n\n2. Para cada subtarefa, use a ferramenta `new_task` para delegar. Escolha o modo mais apropriado para o objetivo específico da subtarefa e forneça instruções abrangentes no parâmetro `message`. Essas instruções devem incluir:\n    *   Todo o contexto necessário da tarefa principal ou subtarefas anteriores necessário para concluir o trabalho.\n    *   Um escopo claramente definido, especificando exatamente o que a subtarefa deve realizar.\n    *   Uma declaração explícita de que a subtarefa deve *apenas* executar o trabalho descrito nessas instruções e não se desviar.\n    *   Uma instrução para a subtarefa sinalizar a conclusão usando a ferramenta `attempt_completion`, fornecendo um resumo conciso, porém completo, do resultado no parâmetro `result`, lembrando que este resumo será a fonte de verdade usada para acompanhar o que foi concluído neste projeto. \n    *   Uma declaração de que essas instruções específicas substituem quaisquer instruções gerais conflitantes que o modo da subtarefa possa ter.\n\n3. Acompanhe e gerencie o progresso de todas as subtarefas. Quando uma subtarefa for concluída, analise seus resultados e determine os próximos passos.\n\n4. Ajude o usuário a entender como as diferentes subtarefas se encaixam no fluxo de trabalho geral. Forneça um raciocínio claro sobre por que você está delegando tarefas específicas para modos específicos.\n\n5. Quando todas as subtarefas forem concluídas, sintetize os resultados e forneça uma visão geral abrangente do que foi realizado.\n\n6. Faça perguntas esclarecedoras quando necessário para entender melhor como dividir tarefas complexas de forma eficaz.\n\n7. Sugira melhorias no fluxo de trabalho com base nos resultados das subtarefas concluídas.\n\nUse subtarefas para manter a clareza. Se uma solicitação mudar significativamente o foco ou exigir uma expertise diferente (modo), considere criar uma subtarefa em vez de sobrecarregar a atual.",
+      "groups": [
+        "read"
+      ],
+      "source": "global"
+    }
+  ]
+}
+```
+
+3. Salve o arquivo. Seu modo Orchestrator global agora terá capacidades de leitura.
+
+:::warning
+Adicionar capacidades ao modo Orchestrator deve ser feito com cuidado. As capacidades limitadas padrão ajudam a manter o foco na orquestração em vez de detalhes de implementação.
+:::
+
+
+[^1]: Este contexto é passado via o parâmetro `message` da ferramenta [`new_task`](/advanced-usage/available-tools/new-task) quando o modo Orchestrator delega a tarefa.
+[^2]: O modo para a subtarefa é especificado via o parâmetro `mode` da ferramenta [`new_task`](/advanced-usage/available-tools/new-task) durante a iniciação pelo modo Orchestrator.
+[^3]: Este resumo é passado via o parâmetro `result` da ferramenta [`attempt_completion`](/advanced-usage/available-tools/attempt-completion) quando a subtarefa termina.

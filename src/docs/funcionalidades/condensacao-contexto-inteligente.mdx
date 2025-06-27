@@ -1,0 +1,110 @@
+---
+sidebar_label: 'Condensação Inteligente de Contexto'
+---
+
+import Codicon from '@site/src/components/Codicon';
+
+# Condensação Inteligente de Contexto
+
+O recurso de Condensação Inteligente de Contexto ajuda a gerenciar conversas longas resumindo partes anteriores do diálogo. Isso evita que informações importantes sejam perdidas quando a janela de contexto se aproxima do limite. Este recurso está **habilitado por padrão**.
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+  <iframe
+    src="https://www.youtube.com/embed/9k8OAXlszak"
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}
+    frameBorder="0"
+    allow="autoplay; encrypted-media"
+    allowFullScreen
+  ></iframe>
+</div>
+
+<br />
+
+---
+
+## Como Funciona
+
+À medida que sua conversa com o Roo Code cresce, ela pode se aproximar do limite da janela de contexto do modelo de IA subjacente. Quando isso acontece, mensagens mais antigas normalmente seriam removidas para liberar espaço. A Condensação Inteligente de Contexto visa prevenir essa perda abrupta:
+
+1.  **Resumindo:** Usa um modelo de IA para condensar partes anteriores da conversa.
+2.  **Mantendo o Essencial:** O objetivo é reduzir a contagem total de tokens enquanto mantém as informações-chave das mensagens resumidas.
+3.  **Preservando o Fluxo:** Isso permite que a IA tenha uma compreensão mais coerente de toda a conversa, mesmo as muito longas.
+
+**Considerações Importantes:**
+*   **Impacto do Resumo:** Embora as mensagens originais sejam preservadas se você usar [Pontos de Controle](/features/checkpoints) para retroceder, a versão resumida é o que é usado nas chamadas contínuas da LLM para manter o contexto gerenciável.
+*   **Custo:** A chamada de IA para realizar o resumo incorre em um custo. Este custo está incluído nas métricas de condensação de contexto exibidas na interface.
+
+---
+
+## Configuração
+
+A Condensação Inteligente de Contexto está **habilitada por padrão** e oferece várias opções de configuração:
+
+1.  Abra as configurações do Roo Code (ícone <Codicon name="gear" /> no canto superior direito do painel do Roo Code).
+2.  Navegue até a seção de configurações "Contexto".
+3.  Configure as opções disponíveis:
+    - **Disparar automaticamente a condensação inteligente de contexto**: Habilitado por padrão, controla se a condensação ocorre automaticamente
+    - **Limite para disparar a condensação inteligente de contexto**: Um controle deslizante de porcentagem (padrão 100%) que determina quando a condensação é ativada com base no uso da janela de contexto
+    - **Configuração de API para Condensação de Contexto**: Escolha qual configuração de API usar para operações de condensação (padrão é sua configuração ativa atual)
+    - **Prompt Personalizado para Condensação de Contexto**: Personalize o prompt do sistema usado para operações de condensação de contexto
+
+<img src="/img/intelligent-context-condensing/intelligent-context-condensing.png" alt="Configurações para Condensação Inteligente de Contexto" width="600" />
+*Opções de configuração da Condensação Inteligente de Contexto: alternar disparo automático, controle deslizante de limite, seleção de configuração de API e personalização de prompt personalizado.*
+
+---
+
+## Controlando e Entendendo a Condensação de Contexto
+
+O Roo Code fornece várias maneiras de controlar e entender o recurso de Condensação Inteligente de Contexto:
+
+### Controlando a Condensação de Contexto
+*   **Limite Automático:** O controle deslizante de limite nas configurações de "Contexto" permite definir uma porcentagem (ex: 80%) de uso da janela de contexto. O Roo Code tentará condensar o contexto automaticamente quando a conversa atingir esse nível de capacidade.
+*   **Configuração de API:** Selecione qual configuração de API usar para operações de condensação de contexto. Isso permite usar um provedor ou modelo diferente especificamente para condensação, se desejado.
+*   **Prompts Personalizados:** Modifique o prompt do sistema usado para condensação para melhor se adequar ao seu fluxo de trabalho ou enfatizar certos aspectos do resumo da conversa.
+*   **Disparo Manual:** Um botão **Condensar Contexto** está disponível no topo da tarefa, posicionado à direita da barra de contexto. Isso permite iniciar o processo de condensação de contexto a qualquer momento.
+
+    <img src="/img/intelligent-context-condensing/intelligent-context-condensing-1.png" alt="Botão Condensar Contexto manual na visualização expandida da tarefa" width="600" />
+    *O botão Condensar Contexto manual (destacado com uma seta amarela) é facilmente acessível para controle manual.*
+
+### Entendendo a Atividade de Condensação de Contexto
+*   **Métricas de Condensação de Contexto:** Quando a condensação de contexto ocorre, o Roo Code exibe:
+    *   As contagens de tokens de contexto antes e depois da condensação.
+    *   O custo associado à chamada de IA para condensação de contexto.
+    *   Um resumo expansível detalhando o que foi condensado (esta informação faz parte do componente `ContextCondenseRow` visível no histórico do chat).
+
+<img src="/img/intelligent-context-condensing/intelligent-context-condensing-2.png" alt="Mensagem de contexto condensado no chat" width="600" />
+*Após a condensação de contexto, uma mensagem indica que o contexto foi condensado, mostrando mudanças de tokens e custo.*
+
+*   **Indicadores Visuais:**
+    *   Um indicador de progresso ("Condensando contexto...") é mostrado na interface do chat enquanto a condensação de contexto está ativa.
+
+<img src="/img/intelligent-context-condensation/intelligent-context-condensation-3.png" alt="Indicador de progresso de condensação de contexto no chat" width="600" />
+*O indicador "Condensando contexto..." aparece no chat durante o processo.*
+
+    *   O cabeçalho da tarefa também exibe o status atual da condensação de contexto.
+    *   A barra `ContextWindowProgress` oferece uma representação visual da distribuição de tokens, incluindo uso atual, espaço reservado para saída da IA, espaço disponível e números brutos de tokens.
+*   **Clareza da Interface:** O botão "Condensar Contexto" inclui uma dica de ferramenta explicando sua função, disponível em todos os idiomas suportados.
+
+---
+
+## Implementação Técnica
+
+### Contagem de Tokens
+O Roo Code usa um sistema sofisticado de contagem de tokens que:
+- Emprega endpoints nativos de contagem de tokens quando disponíveis (ex: API da Anthropic)
+- Recorre à estimativa tiktoken se as chamadas de API falharem
+- Fornece contagem precisa para diferentes tipos de conteúdo:
+  - Conteúdo de texto: Usa estimativa baseada em palavras com sobrecarga de pontuação e novas linhas
+  - Conteúdo de imagem: Usa uma estimativa conservadora de 300 tokens por imagem
+  - Prompts do sistema: Inclui sobrecarga adicional para elementos estruturais
+
+### Gerenciamento da Janela de Contexto
+- Por padrão, 30% da janela de contexto é reservada (20% para saída do modelo e 10% como buffer de segurança), deixando 70% disponível para histórico de conversa.
+- Esta reserva pode ser substituída por configurações específicas do modelo
+- O sistema calcula automaticamente o espaço disponível mantendo esta reserva

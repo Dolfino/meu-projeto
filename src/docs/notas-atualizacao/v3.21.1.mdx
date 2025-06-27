@@ -1,0 +1,16 @@
+# Notas de Versão Roo Code 3.21.1 (2025-06-18)
+
+Esta versão de correção melhora a estabilidade, segurança e fornece melhor tratamento de erros para vários recursos importantes.
+
+## Correções de Bugs
+
+* **Confiabilidade do Parser**: Corrigido problema que podia impedir o carregamento correto do parser em certos ambientes, melhorando a estabilidade geral ([#4857](https://github.com/RooCodeInc/Roo-Code/pull/4857))
+* **Estabilidade no Windows**: Resolvida falha que podia ocorrer ao usar servidores MCP no Windows com gerenciadores de versão Node ([#4711](https://github.com/RooCodeInc/Roo-Code/pull/4711))
+* **Limitação de Subtarefas**: Implementada limitação global para prevenir erros na criação de subtarefas, garantindo execução mais confiável (agradecimentos a olweraltuve!) ([#4453](https://github.com/RooCodeInc/Roo-Code/pull/4453))
+* **Erros de Busca no Código**: Melhoradas mensagens de erro para busca no código, facilitando diagnóstico e resolução de problemas com embeddings ([#4432](https://github.com/RooCodeInc/Roo-Code/pull/4432))
+
+## Melhorias Diversas
+
+* **Rastreamento de Custos Anthropic**: Melhorada precisão do relatório de custos para modelos Anthropic ([#4849](https://github.com/RooCodeInc/Roo-Code/pull/4849))
+* **Otimização de Performance**: A configuração "Ativar Criação de Servidor MCP" agora está desativada por padrão, reduzindo uso de tokens e simplificando prompts para a maioria dos usuários ([#4838](https://github.com/RooCodeInc/Roo-Code/pull/4838))
+* **Segurança**: Resolvidas vulnerabilidades de segurança atualizando dependências ([#4844](https://github.com/RooCodeInc/Roo-Code/pull/4844))

@@ -1,0 +1,20 @@
+# Notas de Versão Roo Code 3.21.4 (2025-06-23)
+
+Esta versão introduz o novo provedor Claude Code para integração local via CLI e corrige vários problemas críticos.
+
+## Use Sua Assinatura Claude Max com o Roo Code
+
+Agora você pode usar sua assinatura Claude Max diretamente no Roo Code através do novo [provedor Claude Code](/providers/claude-code) (agradecimentos a Cline!) ([#4864](https://github.com/RooCodeInc/Roo-Code/pull/4864), [#5038](https://github.com/RooCodeInc/Roo-Code/pull/5038)):
+
+- **Aproveite Sua Assinatura Existente**: Conecte seu plano Claude Max ao Roo Code via CLI
+- **Sem Custos Adicionais de API**: Use os benefícios da sua assinatura ao invés de pagar por token
+- **Acesso a Modelos Premium**: Use Claude Sonnet 4, Opus 4 e outros modelos avançados incluídos no seu plano
+- **Configuração Simples**: Selecione Claude Code como provedor durante a configuração - sem necessidade de chaves API
+- **Suporte a Raciocínio Avançado**: Acesso completo aos modos de pensamento e capacidades de raciocínio do Claude
+
+Ideal para assinantes Claude Max que querem maximizar o valor da assinatura enquanto programam.
+
+## Correções de Bugs
+
+* **Precisão do Apply Diff**: Corrigido parâmetro de linha inicial que não funcionava corretamente ao aplicar múltiplos diffs (agradecimentos a samhvw8!) ([#5019](https://github.com/RooCodeInc/Roo-Code/pull/5019))
+* **Compatibilidade com Ollama**: Resolvidos erros de validação que impediam o Ollama de funcionar com certos modelos (agradecimentos a daniel-lxs, MartinHarding1998!) ([#5014](https://github.com/RooCodeInc/Roo-Code/pull/5014))

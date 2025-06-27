@@ -1024,6 +1024,152 @@ mode_collaboration:
       - return_context_snippets            # lista de trechos ao solicitante
       - log_sync_status                    # verde/amarelo/vermelho
       - report_completion_status           # done / blocked + próximos passos
+  copywriter-marketing:
+    handoff_to_digital-marketing:
+      - copy_ready_for_campaign        # texto final p/ ads/emails
+      - seo_keyword_alignment_needed   # ajustar headline a palavra-chave
+    handoff_from_digital-marketing:
+      - campaign_brief_provided        # meta, persona, canal, orçamento
+      - performance_feedback_received  # CTR/ROAS dados p/ iterar
+    handoff_to_growth-marketing:
+      - headline_variants_for_ab_test  # enviar V1/V2 para experimento
+    handoff_from_growth-marketing:
+      - ab_test_results_returned       # taxa de conversão de cada variante
+    handoff_to_ui-ux-specialist:
+      - microcopy_for_new_ui_element   # botão, tooltip, empty-state
+    handoff_from_ui-ux-specialist:
+      - tone_guideline_update          # ajuste de voz/terminologia
+    boomerang_delegated_task_reception:
+      - draft_multichannel_copy        # ads, email, landing em lote
+      - optimise_existing_copy         # melhorar CTA, clareza, SEO
+      - localise_and_internationalise  # adaptar pt-BR ↔ en, etc.
+      - build_copy_style_guide         # brand voice, exemplos, do/don’t
+    boomerang_completion_reporting:
+      - summarize_copy_variants        # tabela de variações + rationale
+      - attach_performance_metrics     # CTR, CVR se disponível
+      - list_follow_up_actions         # próximos testes ou ajustes
+      - report_completion_status       # done / blocked + próximos passos
+  paid-traffic-specialist:
+    handoff_to_growth-marketing:
+      - spend_efficiency_report_ready     # enviar ROAS / CAC insights
+      - new_creative_test_results         # CTR x variante
+    handoff_from_growth-marketing:
+      - budget_reallocation_request       # mover verba entre canais
+      - experiment_hypothesis_provided    # teste A/B para headline
+    handoff_to_digital-marketing:
+      - creative_asset_needed             # banner, vídeo, copy
+    handoff_from_digital-marketing:
+      - creative_assets_delivered         # arquivos prontos para upload
+    handoff_to_google-tag-manager:
+      - conversion_tag_update_required    # novo evento a medir
+    handoff_from_google-tag-manager:
+      - tag_deployment_confirmed          # conversão disparando OK
+    boomerang_delegated_task_reception:
+      - launch_search_and_display_campaigns  # Google Ads setup completo
+      - optimise_bids_and_budgets            # ajustar tCPA, Max-ROAS
+      - build_retargeting_audiences          # pixel + segmentação
+      - produce_weekly_kpi_report            # spend, conv, ROAS
+    boomerang_completion_reporting:
+      - summarize_campaign_changes           # KWs, bids, orçamento
+      - attach_performance_metrics           # ROAS, CPA, CTR
+      - list_next_optimisation_steps         # próximos ajustes
+      - report_completion_status             # done / blocked + passos
+  prompt-design-specialist:
+    handoff_to_copywriter-marketing:
+      - high_quality_prompt_for_copy          # supply refined copy prompt
+    handoff_from_copywriter-marketing:
+      - copy_prompt_needs_refinement          # improve tone / format
+    handoff_to_paid-traffic-specialist:
+      - ppc_prompt_template_ready             # ad headline / assets prompt
+    handoff_from_paid-traffic-specialist:
+      - cta_variant_performance_feedback      # data to tune prompt
+    handoff_to_growth-marketing:
+      - ab_test_prompt_versions               # create A/B versions
+    handoff_from_growth-marketing:
+      - ab_results_require_prompt_tuning      # iterate based on data
+    handoff_to_data-scientist:
+      - prompt_for_sentiment_analysis         # few-shot label examples
+    handoff_from_data-scientist:
+      - labeling_guidelines_update            # new taxonomy feedback
+    boomerang_delegated_task_reception:
+      - draft_zero_and_few_shot_prompts
+      - build_prompt_chaining_flow
+      - set_up_prompt_ab_test_plan
+      - document_prompt_template
+    boomerang_completion_reporting:
+      - summarise_prompt_versions
+      - attach_test_metrics
+      - list_next_iteration_steps
+      - report_completion_status
+  video-prompt-design-specialist:
+    handoff_to_copywriter-marketing:
+      - script_prompt_needed                 # gerar prompt p/ narração/legenda
+    handoff_from_copywriter-marketing:
+      - script_ready_needs_video_prompt      # copy final, falta vídeo
+    handoff_to_paid-traffic-specialist:
+      - ad_video_variants_prompt_ready       # variantes 15 s / 30 s
+    handoff_from_paid-traffic-specialist:
+      - performance_metrics_for_iteration    # VTR/CPV feedback
+    handoff_to_ui-ux-specialist:
+      - caption_legibility_check_request     # safe-zone e contraste
+    handoff_from_ui-ux-specialist:
+      - caption_adjustment_required          # ajustar fonte/posição
+    boomerang_delegated_task_reception:
+      - lookup_video_specs                   # resolução, duração por canal
+      - validate_render_settings             # fps, bitrate, loudness
+      - build_batch_video_prompt_briefs      # JSON multi-canal
+      - craft_sora_prompt_with_directives    # cenário, câmera, iluminação
+    boomerang_completion_reporting:
+      - summarize_prompts_and_assets         # lista canais + prompts
+      - attach_validation_scores             # nota conformidade cada render
+      - propose_next_iteration               # A/B ou pós-produção
+      - report_completion_status             # done / blocked + next steps
+  image-prompt-creator:
+    handoff_to_copywriter-marketing:
+      - visual_prompt_from_copy_needed       # gerar prompt baseado no copy
+    handoff_from_copywriter-marketing:
+      - copy_ready_needs_image_prompt        # copy final, falta imagem IA
+    handoff_to_paid-traffic-specialist:
+      - ad_creative_prompt_ready             # variações criativas PPC
+    handoff_from_paid-traffic-specialist:
+      - ad_performance_feedback_received     # CTR/ROAS p/ iterar arte
+    handoff_to_ui-ux-specialist:
+      - safe_zone_and_accessibility_check    # contraste, legibilidade
+    handoff_from_ui-ux-specialist:
+      - accessibility_adjustment_required    # ajustar fonte/posição
+    boomerang_delegated_task_reception:
+      - lookup_latest_image_specs            # tabela atualizada 2025
+      - validate_mockup_size_and_ratio       # checklist + score
+      - build_batch_prompt_briefs            # JSON multi-canal
+      - craft_midjourney_prompt_variants     # estilo, luz, seed
+    boomerang_completion_reporting:
+      - summarise_prompts_and_outputs        # lista canais + prompts
+      - attach_validation_scores             # nota cada mock-up
+      - propose_next_iterations              # A/B ou ajustes de cor
+      - report_completion_status             # done / blocked + next steps
+  seo-website-specialist:
+    handoff_to_copywriter-marketing:
+      - keyword_map_ready_for_copy         # entregar map + intent
+    handoff_from_copywriter-marketing:
+      - copy_updated_needs_seo_review      # validar densidade, meta
+    handoff_to_performance-optimizer:
+      - cwv_metrics_need_improvement       # LCP, CLS, INP ajustes
+    handoff_from_performance-optimizer:
+      - performance_fix_implemented        # re-test PageSpeed
+    handoff_to_ui-ux-specialist:
+      - a11y_impact_on_seo_check           # contrast alt text
+    handoff_from_ui-ux-specialist:
+      - design_change_affects_seo          # header tag hierarchy
+    boomerang_delegated_task_reception:
+      - run_full_seo_audit                 # crawl, CWV, schema
+      - build_keyword_to_url_mapping       # primary & secondary KW
+      - generate_fix_ticket_backlog        # JSON tasks per issue
+      - produce_rank_tracking_baseline     # SERP position sheet
+    boomerang_completion_reporting:
+      - summarise_audit_findings           # top issues + impact
+      - attach_keyword_map_and_metrics     # files / sheets links
+      - propose_next_sprint_actions        # backlog order
+      - report_completion_status           # done / blocked + next
 
 mode_triggers:
   architect:
@@ -1096,6 +1242,36 @@ mode_triggers:
 
   google-tag-manager:
     - gtm_container_update
+
+  copywriter-marketing:
+    - copy_write_request
+    - copy_revision_needed
+    - campaign_brief_received
+
+  paid-traffic-specialist:
+    - paid_campaign_setup_needed
+    - paid_campaign_optimisation
+    - roas_report_requested
+
+  prompt-design-specialist:
+    - prompt_design_request
+    - prompt_optimisation_needed
+    - prompt_ab_test_required
+
+  video-prompt-design-specialist:
+    - video_prompt_request
+    - video_spec_validation
+    - social_video_dimensions_lookup
+
+  image-prompt-creator:
+    - image_prompt_request
+    - mockup_validation_needed
+    - social_image_specs_lookup
+
+  seo-website-specialist:
+    - seo_audit_request
+    - keyword_research_needed
+    - on_page_optimisation
 
   # ---------- Performance & Segurança ----------
   performance-optimizer:
